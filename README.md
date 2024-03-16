@@ -1,6 +1,6 @@
 # psDateFunctions
 
-This PowerShell module began it's life when I had a requirement to calculate 'Patch Tuesday', the 2nd Tuesday of the Month, to automate patch release shedules. I have now extended it to cover all variations of the nth instance, or nth last instance of a particular weekday in a month, including Patch Tuesday.
+This PowerShell module began it's life when I had a requirement to calculate 'Patch Tuesday', the 2nd Tuesday of the Month, to automate patch release schedules. I have now extended it to cover all variations of the nth instance, or nth last instance of a particular weekday in a month, including Patch Tuesday.
 
 It provides a comprehensive set of tools for finding specific dates within a month, catering to a wide range of needs. Key features include:
 

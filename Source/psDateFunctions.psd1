@@ -91,10 +91,10 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('date','dates','patch tuesday')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://raw.githubusercontent.com/MadCrabCyder/psDateFunctions/master/LICENSE'
 
         # A URL to the main website for this project.
         ProjectUri = 'https://github.com/MadCrabCyder/psDateFunctions'
