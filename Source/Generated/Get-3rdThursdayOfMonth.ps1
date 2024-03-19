@@ -1,6 +1,7 @@
 function Get-3rdThursdayOfMonth {
     [Alias('')]
     [CmdletBinding()]
+    [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,
         [Parameter(Mandatory)][int]$Year

@@ -29,6 +29,7 @@ function Get-WrapperFunctionContent {
 function $functionName {
     [Alias('$alias')]
     [CmdletBinding()]
+    [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]`$Month,
         [Parameter(Mandatory)][int]`$Year

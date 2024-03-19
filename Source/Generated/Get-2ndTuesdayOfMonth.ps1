@@ -1,6 +1,7 @@
 function Get-2ndTuesdayOfMonth {
     [Alias('Get-PatchTuesday')]
     [CmdletBinding()]
+    [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,
         [Parameter(Mandatory)][int]$Year
