@@ -1,7 +1,7 @@
 BeforeAll {
-    $TopLevel = (Split-Path(Split-Path $PSScriptRoot))
+    $TopLevel = Resolve-Path "$PSScriptRoot../../.."
 
-    . $TopLevel\Source\Public\Get-FirstDayOfMonth.ps1
+    . $TopLevel\Source\Public\Get-1stDayOfMonth.ps1
     . $TopLevel\Source\Public\Get-LastDayOfMonth.ps1
     . $TopLevel\Source\Public\Get-NthWeekdayOfMonth.ps1
     . $TopLevel\Source\Public\Get-NthLastWeekdayOfMonth.ps1
@@ -15,25 +15,24 @@ Describe 'Test Wrapper Functions' {
 
     # Define weekdays and week ordinals
     $Days = [System.DayOfWeek].GetEnumNames()
-    $Weeks = @{ 1 = '1st'; 2 = '2nd'; 3 = '3rd'; 4 = '4th'; 5 = '5th' }
 
     . .\Source\Meta\meta-functions.ps1
 
-    $testCases = foreach ($week in $Weeks.GetEnumerator()) {
-        foreach ($day in $Days) {
-            foreach ($function in @('Get-NthWeekdayOfMonth', 'Get-NthLastWeekdayOfMonth')) {
+    $testCases = foreach ($N in 1..5) {
+        foreach ($Day in $Days) {
+            foreach ($wrappedFunction in @('Get-NthWeekdayOfMonth', 'Get-NthLastWeekdayOfMonth')) {
+
+                $functionDetails = Get-WrapperFunctionDetails -WrappedFunction $wrappedFunction -Day $Day -N $N
 
                 @{
-                    WrappedFunction = $function
+                    WrappedFunction = $wrappedFunction
                     Day = $day
-                    Nth = $week.Key
-                    NthOrd = $week.Value
-                    Function = Get-WrapperFunctionName -wrappedFunction $function -Nth $week.Value -Day $day
+                    Nth = $N
+                    Function = $functionDetails.FunctionName
                 }
             }
         }
     }
-
 
     Context 'Test Function <Function>' -ForEach $testCases  {
 
@@ -42,7 +41,7 @@ Describe 'Test Wrapper Functions' {
             . "$($TopLevel)\Source\Generated\$($Function).ps1"
         }
 
-        it 'should exist'  {
+        it 'function should exist'  {
 
             Get-Command $Function -EA SilentlyContinue | Should -Not -BeNullOrEmpty
         }

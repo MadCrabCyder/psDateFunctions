@@ -19,6 +19,7 @@ Install-Module -Name psDateFunctions
 
 ## Functions Included
 
+- Get-1stDayOfMonth
 - Get-FirstDayOfMonth
 - Get-LastDayOfMonth
 - Get-NthWeekdayOfMonth
@@ -102,7 +103,7 @@ Install-Module -Name psDateFunctions
 Want to know when to host your next wizard's conclave (or just a friendly get-together)? Here's how:
 ```powershell
 # Grab the first day of the month to start planning.
-Get-FirstDayOfMonth -Month 11 -Year 2024
+Get-1stDayOfMonth -Month 11 -Year 2024
 
 # Find out when the next "Patch Tuesday" falls to avoid any IT calamities.
 Get-PatchTuesday -Month 12 -Year 2025
@@ -115,3 +116,22 @@ Get-5thLastMondayOfMonth -Month 4 -Year 2007
 ```
 
 Whether you're managing event schedules, performing date-based calculations, or coordinating IT maintenance tasks, this module provides the essential tools to find relevant dates with ease and precision. Its intuitive design and comprehensive coverage of date-related queries make it an indispensable tool for PowerShell users seeking to streamline their date manipulation tasks.
+
+## Release Notes
+
+> ### 0.0.3
+> - Added Release Notes to README.md
+> - Added documentation to functions
+> - Added restriction for Nth to functions Get-NthWeekdayOfMonth and Get-NthLastWeekdayOfMonth
+> - Added validation for Year to be between 1 and 9999
+> - Refactored meta functions
+> - Renamed function Get-FirstDayOfMonth to Get-1stDayOfMonth for consistancy
+> - Removed CmdletBinding attribute from functions
+
+> ### 0.0.2 (19-Mar-2024)
+> - Fixed typo in README
+> - Added OutputType as System.DateTime to all functions
+> - Added Tags to project manifest file
+
+> ### 0.0.1 (14-Mar-2024)
+> - Initial Release

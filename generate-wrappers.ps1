@@ -5,35 +5,26 @@
 
 . .\Source\Meta\meta-functions.ps1
 
-# Define weekdays and week ordinals
+# Define weekdays
 $Days = [System.DayOfWeek].GetEnumNames()
-$Weeks = @{
-    1 = '1st'
-    2 = '2nd'
-    3 = '3rd'
-    4 = '4th'
-    5 = '5th'
-}
 
 # Define the target directory and remove any previously generated scripts
 $targetDirectory = ".\Source\Generated\"
-if (-not (Test-Path -Path $targetDirectory)) {
-    New-Item -ItemType Directory -Force -Path $targetDirectory
-}
+
 Get-ChildItem -Path $targetDirectory -Filter "*.ps1" | Remove-Item
 
 
 # Main loop to generate functions
-foreach ($week in $Weeks.GetEnumerator()) {
-    foreach ($day in $Days) {
-        foreach ($function in @('Get-NthWeekdayOfMonth', 'Get-NthLastWeekdayOfMonth')) {
+foreach ($N in 1..5) {
+    foreach ($Day in $Days) {
+        foreach ($wrappedFunction in @('Get-NthWeekdayOfMonth', 'Get-NthLastWeekdayOfMonth')) {
 
+            $functionDetails = Get-WrapperFunctionDetails -WrappedFunction $wrappedFunction -Day $Day -N $N
 
-            $functionName = Get-WrapperFunctionName -wrappedFunction $function -Nth $week.Value -Day $day
-            $functionContent = Get-WrapperFunctionContent -functionName $functionName -wrappedFunction $function -day $day -week $week.Key
-            $functionPath = Join-Path -Path $targetDirectory -ChildPath "$functionName.ps1"
+            $functionContent = Get-WrapperFunctionContent -FunctionDetails $functionDetails -wrappedFunction $wrappedFunction -Day $Day -N $N
+
+            $functionPath = Join-Path -Path $targetDirectory -ChildPath "$($functionDetails.FunctionName).ps1"
             $functionContent | Out-File -FilePath $functionPath
-
         }
     }
 }

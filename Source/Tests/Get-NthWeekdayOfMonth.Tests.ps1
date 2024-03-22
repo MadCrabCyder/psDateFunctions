@@ -1,6 +1,6 @@
 BeforeAll {
-    $TopLevel = (Split-Path(Split-Path $PSScriptRoot))
-    . $TopLevel\Source\Public\Get-FirstDayOfMonth.ps1
+    $TopLevel = Resolve-Path "$PSScriptRoot../../.."
+    . $TopLevel\Source\Public\Get-1stDayOfMonth.ps1
     . $TopLevel\Source\Public\Get-NthWeekdayOfMonth.ps1
 }
 
@@ -41,6 +41,33 @@ Describe 'Get-NthWeekdayOfMonth Exceptions' {
         foreach ($testCase in $testCases) {
             { Get-NthWeekdayOfMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
                 Should -Throw 'Invalid Month'
+        }
+    }
+
+    it 'Given an invalid year, should throw an exception' {
+        $testCases=@(
+                @{ Year=0; Month=1; Weekday=[System.DayOfWeek]::Saturday; Nth=3 }
+                @{ Year=10000; Month=2; Weekday=[System.DayOfWeek]::Sunday; Nth=1 }
+                @{ Year=-1; Month=3; Weekday=[System.DayOfWeek]::Friday; Nth=3 }
+                @{ Year=-5; Month=4; Weekday=[System.DayOfWeek]::Thursday; Nth=3 }
+        )
+        foreach ($testCase in $testCases) {
+            { Get-NthWeekdayOfMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
+                Should -Throw 'Invalid Year'
+        }
+    }
+
+    it 'Given an invalid Nth, should throw an exception' {
+        $testCases=@(
+                @{ Year=2023; Month=1; Weekday=[System.DayOfWeek]::Saturday; Nth=0 }
+                @{ Year=2023; Month=2; Weekday=[System.DayOfWeek]::Sunday; Nth=-1 }
+                @{ Year=2023; Month=3; Weekday=[System.DayOfWeek]::Friday; Nth=6 }
+                @{ Year=2023; Month=4; Weekday=[System.DayOfWeek]::Thursday; Nth=25 }
+                @{ Year=2021; Month=5; Weekday=[System.DayOfWeek]::Wednesday; Nth=-16}
+        )
+        foreach ($testCase in $testCases) {
+            { Get-NthWeekdayOfMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
+                Should -Throw 'Invalid Nth, must be between 1 and 5'
         }
     }
 

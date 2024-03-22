@@ -8,10 +8,10 @@
 RootModule = '.\psDateFunctions.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.0.3'
 
 # Supported PSEditions
-CompatiblePSEditions = @('Desktop', 'Core')
+# CompatiblePSEditions = @('Desktop', 'Core')
 
 # ID used to uniquely identify this module
 GUID = '92bd8191-fb2a-49e8-8474-a0d6fffed2e6'
@@ -26,7 +26,7 @@ CompanyName = 'Mad Crab Cyder Productions'
 Copyright = '(c) Mad Crab Cyder. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'This PowerShell module is ideal for planning, scheduling, and IT operations, enabling users to find the first and last days of a month, any variation of the nth instance, or nth last instance of a particular weekday in a month, including Patch Tuesday. '
+Description = 'This PowerShell module is ideal for planning, scheduling, and IT operations, enabling users to find the first and last days of a month, any variation of the nth instance, or nth last instance of a particular weekday in a month, including Patch Tuesday.'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -91,7 +91,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = @('date','dates','patch tuesday')
+        Tags = @('Date','Dates','Scheduling','Patch','PatchTuesday','WindowsUpdate')
 
         # A URL to the license for this module.
         LicenseUri = 'https://raw.githubusercontent.com/MadCrabCyder/psDateFunctions/master/LICENSE'
@@ -103,7 +103,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'Initial release of psDateFunctions module.'
+        ReleaseNotes = 'Now with documentation!'
 
         # Prerelease string of this module
         Prerelease = ''
