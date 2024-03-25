@@ -8,7 +8,7 @@
 RootModule = '.\psDateFunctions.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.3'
+ModuleVersion = '1.0.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @('Desktop', 'Core')
@@ -103,7 +103,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'Now with documentation!'
+        ReleaseNotes = 'Release version 1, now available'
 
         # Prerelease string of this module
         Prerelease = ''

@@ -119,7 +119,10 @@ Whether you're managing event schedules, performing date-based calculations, or 
 
 ## Release Notes
 
-> ### 0.0.3
+> ### 1.0.0 (25-Mar-2024)
+> - Promote 0.0.3 to release version 1!
+
+> ### 0.0.3 (22-Mar-2024)
 > - Added Release Notes to README.md
 > - Added documentation to functions
 > - Added restriction for Nth to functions Get-NthWeekdayOfMonth and Get-NthLastWeekdayOfMonth
