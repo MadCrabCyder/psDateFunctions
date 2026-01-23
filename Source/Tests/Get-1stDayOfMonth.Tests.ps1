@@ -18,6 +18,33 @@ Describe 'Get-1stDayOfMonth - Happy Path' {
     }
 }
 
+Describe 'Get-1stDayOfMonth - Work Day' {
+    $testCases=@(
+        @{ Year=2025; Month=11; ExpectedDay=3 }
+        @{ Year=2025; Month=6; ExpectedDay=2 }
+        @{ Year=2023; Month=10; ExpectedDay=2 }
+       )
+    it 'Given Year=<Year>, Month=<Month>, should return the correct date' -ForEach $testCases {
+
+
+        Get-1stDayOfMonth -Year $Year -Month $Month -WorkDay|
+            Should -BeExactly (Get-Date -year $Year -Month $Month -Day $ExpectedDay).Date
+    }
+}
+
+Describe 'Get-1stDayOfMonth - Exclude Days' {
+    $testCases=@(
+        @{ Year=2025; Month=11; ExpectedDay=4 }
+        @{ Year=2025; Month=6; ExpectedDay=3 }
+        @{ Year=2023; Month=10; ExpectedDay=3 }
+       )
+    it 'Given Year=<Year>, Month=<Month>, should return the correct date' -ForEach $testCases {
+
+        Get-1stDayOfMonth -Year $Year -Month $Month -ExcludeDays Saturday, Sunday, Monday |
+            Should -BeExactly (Get-Date -year $Year -Month $Month -Day $ExpectedDay).Date
+    }
+}
+
 Describe 'Get-1stDayOfMonth Exceptions' {
     Context 'Invalid Month' {
         $testCases=@(

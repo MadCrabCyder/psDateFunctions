@@ -1,15 +1,21 @@
 <#
 .SYNOPSIS
-Calculates the first day of a specified month and year.
+Calculates the first day of a specified month and year, with optional filtering to return the first workday.
 
 .DESCRIPTION
-The Get-1stDayOfMonth function calculates and returns the first day of a given month and year as a System.DateTime object. This can be useful for scheduling, planning, and any operations that require the starting date of a month.
+The Get-1stDayOfMonth function calculates and returns the first day of a given month and year as a System.DateTime object. It also supports filtering out specific days of the week (such as weekends) to return the first valid "workday"
 
 .PARAMETER Month
 The numeric value representing the month. This parameter is mandatory and must be an integer between 1 (January) and 12 (December).
 
 .PARAMETER Year
 The numeric value representing the year. This parameter is mandatory and must be a integer between 1 and 9999.
+
+.PARAMETER Workday
+If specified, the function excludes Saturday and Sunday by default and returns the first day of the month that is not a weekend. This is a convenience switch.
+
+.PARAMETER ExcludeDays
+An optional array of [System.DayOfWeek] values to exclude. When provided, the function skips over any days of the week listed here and returns the first day of the month that is not in the list. This parameter overrides the default exclusions set by -Workday.
 
 .EXAMPLE
 Get-1stDayOfMonth -Month 7 -Year 2024
@@ -21,6 +27,16 @@ $firstDay = Get-1stDayOfMonth -Month 12 -Year 2023
 Write-Output "The first day of December 2023 is: $firstDay"
 
 Calculates the first day of December 2023, assigns it to the variable $firstDay, and prints it.
+
+.EXAMPLE
+Get-1stDayOfMonth -Month 1 -Year 2026 -Workday
+
+Returns the first weekday (Monday to Friday) of January 2026, excluding Saturday and Sunday.
+
+.EXAMPLE
+Get-1stDayOfMonth -Month 2 -Year 2026 -ExcludeDays Sunday, Saturday, Friday
+
+Returns the first day of February 2026 that is not Sunday, Saturday, or Friday.
 
 .INPUTS
 None. You cannot pipe objects to Get-1stDayOfMonth.
@@ -38,9 +54,24 @@ function Get-1stDayOfMonth {
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,
-        [Parameter(Mandatory)][int]$Year
+        [Parameter(Mandatory)][int]$Year,
+        [switch]$Workday,
+        [DayOfWeek[]]$ExcludeDays
     )
     if ($Month -lt 1 -or $Month -gt 12) { throw 'Invalid Month'}
     if ($Year -lt 1 -or $Year -gt 9999) { throw 'Invalid Year'}
-    return (Get-Date -Year $Year -Month $Month -Day 1).Date
+
+    # Set default exclude days to weekend if -Workday is passed and -ExcludeDays is not set
+    if ($Workday -and -not $ExcludeDays) {
+        $ExcludeDays = @([DayOfWeek]::Saturday, [DayOfWeek]::Sunday)
+    }
+
+    $date = Get-Date -Year $Year -Month $Month -Day 1
+
+    while ($ExcludeDays -and $ExcludeDays -contains $date.DayOfWeek) {
+        $date = $date.AddDays(1)
+    }
+
+    return $date.Date
+
 }

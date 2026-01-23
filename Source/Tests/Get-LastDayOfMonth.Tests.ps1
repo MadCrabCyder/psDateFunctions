@@ -22,6 +22,21 @@ Describe 'Get-LastDayOfMonth - Happy Path' {
     }
 }
 
+Describe 'Get-LastDayOfMonth - Work Day' {
+    it 'Should return the correct date' {
+
+
+        $testCases=@(
+            @{ Year=2025; Month=8; ExpectedDay=29 }
+        )
+
+        foreach ($testCase in $testCases) {
+            Get-LastDayOfMonth -Year $testCase.Year -Month $testCase.Month -WorkDay |
+                Should -BeExactly (Get-Date -year $testCase.Year -Month $testCase.Month -Day $testCase.ExpectedDay).Date
+        }
+    }
+}
+
 Describe 'Get-LastDayOfMonth Exceptions' {
     Context 'Invalid Month' {
         $testCases=@(

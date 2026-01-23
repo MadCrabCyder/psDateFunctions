@@ -11,6 +11,12 @@ The numeric value representing the month. This parameter is mandatory and must b
 .PARAMETER Year
 The numeric value representing the year. This parameter is mandatory and must be a integer between 1 and 9999.
 
+.PARAMETER Workday
+If specified, the function excludes Saturday and Sunday by default and returns the first day of the month that is not a weekend. This is a convenience switch.
+
+.PARAMETER ExcludeDays
+An optional array of [System.DayOfWeek] values to exclude. When provided, the function skips over any days of the week listed here and returns the first day of the month that is not in the list. This parameter overrides the default exclusions set by -Workday.
+
 .EXAMPLE
 Get-LastDayOfMonth -Month 7 -Year 2024
 
@@ -37,9 +43,22 @@ function Get-LastDayOfMonth {
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,
-        [Parameter(Mandatory)][int]$Year
+        [Parameter(Mandatory)][int]$Year,
+        [switch]$Workday,
+        [DayOfWeek[]]$ExcludeDays
     )
     if ($Month -lt 1 -or $Month -gt 12) { throw 'Invalid Month'}
     if ($Year -lt 1 -or $Year -gt 9999) { throw 'Invalid Year'}
-    return (Get-Date -Year $Year -Month ($Month+1) -Day 1).Date.AddDays(-1)
+    # Set default exclude days to weekend if -Workday is passed and -ExcludeDays is not
+    if ($Workday -and -not $ExcludeDays) {
+        $ExcludeDays = @([DayOfWeek]::Saturday, [DayOfWeek]::Sunday)
+    }
+
+    $date = (Get-Date -Year $Year -Month ($Month+1) -Day 1).Date.AddDays(-1)
+
+    while ($ExcludeDays -and $ExcludeDays -contains $date.DayOfWeek) {
+        $date = $date.AddDays(-1)
+    }
+
+    return $date.Date
 }

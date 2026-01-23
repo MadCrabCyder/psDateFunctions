@@ -1,4 +1,6 @@
 # psDateFunctions
+[![PSGallery Version](https://img.shields.io/powershellgallery/v/psDateFunctions.svg?style=flat&logo=powershell&label=PSGallery%20Version)](https://www.powershellgallery.com/packages/psDateFunctions) [![PSGallery Downloads](https://img.shields.io/powershellgallery/dt/psDateFunctions.svg?style=flat&logo=powershell&label=PSGallery%20Downloads)](https://www.powershellgallery.com/packages/psDateFunctions)
+
 
 This PowerShell module began it's life when I had a requirement to calculate 'Patch Tuesday', the 2nd Tuesday of the Month, to automate patch release schedules. I have now extended it to cover all variations of the nth instance, or nth last instance of a particular weekday in a month, including Patch Tuesday.
 
@@ -6,7 +8,7 @@ It provides a comprehensive set of tools for finding specific dates within a mon
 
 **First and Last Day of the Month**: Quickly retrieve the first or last date of any given month, simplifying scheduling and planning tasks that depend on these anchor points.
 
-**Nth Instance Wizardry**: Need to schedule a meeting that doesn't clash with your secret superhero duties? Specify an ordinal number (e.g., 1st, 2nd, 3rd) alongside a day of the week and find the perfect date to balance both worlds. 
+**Nth Instance Wizardry**: Need to schedule a meeting that doesn't clash with your secret superhero duties? Specify an ordinal number (e.g., 1st, 2nd, 3rd) alongside a day of the week and find the perfect date to balance both worlds.
 
 **Patch Tuesday**: For the IT warriors out there, calculating Patch Tuesday has never been easier. Plan your software update parties with precision and keep the digital realm secure, all while ensuring the punch bowl never empties.
 
@@ -20,14 +22,14 @@ Install-Module -Name psDateFunctions
 ## Functions Included
 
 - Get-1stDayOfMonth
-- Get-FirstDayOfMonth
+- Get-FirstDayOfMonth (Alias -> Get-1stDayOfMonth)
 - Get-LastDayOfMonth
 - Get-NthWeekdayOfMonth
 - Get-NthLastWeekdayOfMonth
-- Get-PatchTuesday (Alias)
+- Get-PatchTuesday (Alias -> Get-2ndTuesdayOfMonth)
 
-- Get-1stSundayOfMonth 
-- Get-1stMondayOfMonth 
+- Get-1stSundayOfMonth
+- Get-1stMondayOfMonth
 - Get-1stTuesdayOfMonth
 - Get-1stWednesdayOfMonth
 - Get-1stThursdayOfMonth
@@ -105,6 +107,12 @@ Want to know when to host your next wizard's conclave (or just a friendly get-to
 # Grab the first day of the month to start planning.
 Get-1stDayOfMonth -Month 11 -Year 2024
 
+# Get the first workday of the month, you don't work on weekends, right?
+Get-1stDayOfMonth -Month 11 -Year 2024 -Workday
+
+# Get the first day of the month, but not weekend or Monday, because no one likes Mondays.
+Get-1stDayOfMonth -Month 10 -Year 2024 -Exclude Saturday, Sunday, Monday
+
 # Find out when the next "Patch Tuesday" falls to avoid any IT calamities.
 Get-PatchTuesday -Month 12 -Year 2025
 
@@ -118,6 +126,10 @@ Get-5thLastMondayOfMonth -Month 4 -Year 2007
 Whether you're managing event schedules, performing date-based calculations, or coordinating IT maintenance tasks, this module provides the essential tools to find relevant dates with ease and precision. Its intuitive design and comprehensive coverage of date-related queries make it an indispensable tool for PowerShell users seeking to streamline their date manipulation tasks.
 
 ## Release Notes
+
+> ### 1.1.0 (23-Jan-2026)
+> - Added `-Workday` switch to `Get-1stDayOfMonth` and `Get-LastDayOfMonth` - Enables skipping weekends by default (Saturday and Sunday) to return the first/last weekday of a month.
+> - Added `-ExcludeDays` parameter to `Get-1stDayOfMonth` and `Get-LastDayOfMonth` - Allows customization of which days of the week to skip (e.g., `Sunday, Monday`), offering fine-grained control for custom workweek definitions.
 
 > ### 1.0.0 (25-Mar-2024)
 > - Promote 0.0.3 to release version 1!
