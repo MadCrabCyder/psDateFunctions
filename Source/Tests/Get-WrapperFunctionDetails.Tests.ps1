@@ -6,12 +6,12 @@ BeforeAll {
 Describe 'Get-WrapperFunctionDescription' {
 
     $testCases=@(
-        @{ wrappedFunction='Get-NthWeekdayOfMonth'; N=1; Day='Saturday'; Expected=@{FunctionName = 'Get-1stSaturdayOfMonth';Description='1st Saturday';Alias=''} }
-        @{ wrappedFunction='Get-NthWeekdayOfMonth'; N=2; Day='Friday'; Expected=@{FunctionName = 'Get-2ndFridayOfMonth';Description='2nd Friday';Alias=''} }
-        @{ wrappedFunction='Get-NthLastWeekdayOfMonth'; N=3; Day='Monday'; Expected=@{FunctionName = 'Get-3rdLastMondayOfMonth';Description='3rd Last Monday';Alias=''} }
-        @{ wrappedFunction='Get-NthLastWeekdayOfMonth'; N=1; Day='Thursday'; Expected=@{FunctionName = 'Get-LastThursdayOfMonth';Description='Last Thursday';Alias=''} }
-        @{ wrappedFunction='Get-NthWeekdayOfMonth'; N=2; Day='Tuesday'; Expected=@{FunctionName = 'Get-2ndTuesdayOfMonth';Description='2nd Tuesday';Alias='Get-PatchTuesday'} }
-        @{ wrappedFunction='Get-NthLastWeekdayOfMonth'; N=2; Day='Tuesday'; Expected=@{FunctionName = 'Get-2ndLastTuesdayOfMonth';Description='2nd LAst Tuesday';Alias=''} }
+        @{ wrappedFunction='Get-NthDayOfWeekInMonth'; N=1; Day='Saturday'; Expected=@{FunctionName = 'Get-1stSaturdayOfMonth';Description='1st Saturday';Alias=''} }
+        @{ wrappedFunction='Get-NthDayOfWeekInMonth'; N=2; Day='Friday'; Expected=@{FunctionName = 'Get-2ndFridayOfMonth';Description='2nd Friday';Alias=''} }
+        @{ wrappedFunction='Get-NthLastDayOfWeekInMonth'; N=3; Day='Monday'; Expected=@{FunctionName = 'Get-3rdLastMondayOfMonth';Description='3rd Last Monday';Alias=''} }
+        @{ wrappedFunction='Get-NthLastDayOfWeekInMonth'; N=1; Day='Thursday'; Expected=@{FunctionName = 'Get-LastThursdayOfMonth';Description='Last Thursday';Alias=''} }
+        @{ wrappedFunction='Get-NthDayOfWeekInMonth'; N=2; Day='Tuesday'; Expected=@{FunctionName = 'Get-2ndTuesdayOfMonth';Description='2nd Tuesday';Alias='Get-PatchTuesday'} }
+        @{ wrappedFunction='Get-NthLastDayOfWeekInMonth'; N=2; Day='Tuesday'; Expected=@{FunctionName = 'Get-2ndLastTuesdayOfMonth';Description='2nd LAst Tuesday';Alias=''} }
 
        )
     Context 'Should work for <wrappedFunction>, N=<N>, Day=<Day>' -ForEach $testCases {

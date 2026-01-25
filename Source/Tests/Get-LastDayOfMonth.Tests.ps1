@@ -22,7 +22,7 @@ Describe 'Get-LastDayOfMonth - Happy Path' {
     }
 }
 
-Describe 'Get-LastDayOfMonth - Work Day' {
+Describe 'Get-LastDayOfMonth - Weekday' {
     it 'Should return the correct date' {
 
 
@@ -31,7 +31,7 @@ Describe 'Get-LastDayOfMonth - Work Day' {
         )
 
         foreach ($testCase in $testCases) {
-            Get-LastDayOfMonth -Year $testCase.Year -Month $testCase.Month -WorkDay |
+            Get-LastDayOfMonth -Year $testCase.Year -Month $testCase.Month -Weekday |
                 Should -BeExactly (Get-Date -year $testCase.Year -Month $testCase.Month -Day $testCase.ExpectedDay).Date
         }
     }

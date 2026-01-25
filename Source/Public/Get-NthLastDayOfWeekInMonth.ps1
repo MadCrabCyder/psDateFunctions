@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Calculates and returns the Nth last occurrence of a specific weekday in a given month and year.
+Calculates and returns the Nth last occurrence of a specific DayOfWeek in a given month and year.
 
 .DESCRIPTION
-The Get-NthLastWeekdayOfMonth function determines the Nth last occurrence of a specified weekday within a particular month and year. It is useful for finding specific weekdays for scheduling events, meetings, or for any scenario where the ordinal position of a weekday within a month is needed.
+The Get-NthLastDayOfWeekInMonth function determines the Nth last occurrence of a specified DayOfWeek within a particular month and year. It is useful for finding specific DayOfWeeks for scheduling events, meetings, or for any scenario where the ordinal position of a DayOfWeek within a month is needed.
 
 .PARAMETER Month
 The numeric value representing the month. This parameter is mandatory and must be an integer between 1 (January) and 12 (December).
@@ -12,28 +12,28 @@ The numeric value representing the month. This parameter is mandatory and must b
 The numeric value representing the year. This parameter is mandatory and must be a integer between 1 and 9999.
 
 .PARAMETER Nth
-The ordinal instance of the weekday within the month. For example, 1 for the first occurrence, 2 for the second, etc. This parameter is mandatory and must be a positive integer between 1 and 5.
+The ordinal instance of the DayOfWeek within the month. For example, 1 for the first occurrence, 2 for the second, etc. This parameter is mandatory and must be a positive integer between 1 and 5.
 
-.PARAMETER WeekDay
+.PARAMETER DayOfWeek
 The day of the week to find. This parameter is mandatory and accepts a [System.DayOfWeek] enum value (e.g., 'Sunday', 'Monday', 'Tuesday', etc.).
 
 .EXAMPLE
-Get-NthLastWeekdayOfMonth -Month 3 -Year 2024 -Nth 2 -WeekDay 'Tuesday'
+Get-NthLastDayOfWeekInMonth -Month 3 -Year 2024 -Nth 2 -DayOfWeek 'Tuesday'
 
 Returns the second last Tuesday of March 2024 as a System.DateTime object.
 
 .EXAMPLE
-$meetingDay = Get-NthLastWeekdayOfMonth -Month 10 -Year 2023 -Nth 1 -WeekDay 'Monday'
+$meetingDay = Get-NthLastDayOfWeekInMonth -Month 10 -Year 2023 -Nth 1 -DayOfWeek 'Monday'
 Write-Output "The last Monday of October 2023 is on: $meetingDay"
 
 Calculates the last Monday of October 2023, assigns it to the variable $meetingDay, and prints it.
 
 .INPUTS
-None. You cannot pipe objects to Get-NthLastWeekdayOfMonth.
+None. You cannot pipe objects to Get-NthLastDayOfWeekInMonth.
 
 .OUTPUTS
 System.DateTime
-Returns a System.DateTime object representing the Nth occurrence of the specified weekday in the given month and year.
+Returns a System.DateTime object representing the Nth occurrence of the specified DayOfWeek in the given month and year.
 
 .NOTES
 - Ensure the 'Month' and 'Year' parameters are within their valid ranges to avoid exceptions.
@@ -41,14 +41,14 @@ Returns a System.DateTime object representing the Nth occurrence of the specifie
 - The function will throw an exception of the Nth parameter is outside the range 1 to 5.
 
 #>
-function Get-NthLastWeekdayOfMonth {
+function Get-NthLastDayOfWeekInMonth {
     [CmdletBinding()]
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,
         [Parameter(Mandatory)][int]$Year,
         [Parameter(Mandatory)][int]$Nth,
-        [Parameter(Mandatory)][System.DayOfWeek]$WeekDay
+        [Parameter(Mandatory)][System.DayOfWeek]$DayOfWeek
     )
 
     if ($Month -lt 1 -or $Month -gt 12) { throw 'Invalid Month'}
@@ -59,7 +59,7 @@ function Get-NthLastWeekdayOfMonth {
 
     $result =  $lastDayOfMonth.AddDays(
         (
-            ([System.DayOfWeek]::$WeekDay - $lastDayOfMonth.DayOfWeek -7 ) % -7
+            ([System.DayOfWeek]::$DayOfWeek - $lastDayOfMonth.DayOfWeek -7 ) % -7
         ) - 7 * ($Nth -1)
     )
 

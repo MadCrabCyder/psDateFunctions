@@ -3,24 +3,24 @@ BeforeAll {
 
     . $TopLevel\Source\Public\Get-1stDayOfMonth.ps1
     . $TopLevel\Source\Public\Get-LastDayOfMonth.ps1
-    . $TopLevel\Source\Public\Get-NthWeekdayOfMonth.ps1
-    . $TopLevel\Source\Public\Get-NthLastWeekdayOfMonth.ps1
+    . $TopLevel\Source\Public\Get-NthDayOfWeekInMonth.ps1
+    . $TopLevel\Source\Public\Get-NthLastDayOfWeekInMonth.ps1
 }
 Describe 'Test Wrapper Functions' {
 
     BeforeAll {
-        Mock Get-NthWeekdayOfMonth
-        Mock Get-NthLastWeekdayOfMonth
+        Mock Get-NthDayOfWeekInMonth
+        Mock Get-NthLastDayOfWeekInMonth
     }
 
-    # Define weekdays and week ordinals
+    # Define DayOfWeeks and week ordinals
     $Days = [System.DayOfWeek].GetEnumNames()
 
     . .\Source\Meta\meta-functions.ps1
 
     $testCases = foreach ($N in 1..5) {
         foreach ($Day in $Days) {
-            foreach ($wrappedFunction in @('Get-NthWeekdayOfMonth', 'Get-NthLastWeekdayOfMonth')) {
+            foreach ($wrappedFunction in @('Get-NthDayOfWeekInMonth', 'Get-NthLastDayOfWeekInMonth')) {
 
                 $functionDetails = Get-WrapperFunctionDetails -WrappedFunction $wrappedFunction -Day $Day -N $N
 
@@ -54,7 +54,7 @@ Describe 'Test Wrapper Functions' {
                 $Year -eq 2023 -and
                 $Month -eq 6 -and
                 $Nth -eq $Nth -and
-                $WeekDay -eq [System.DayOfWeek]$day
+                $DayOfWeek -eq [System.DayOfWeek]$day
             }
         }
     }

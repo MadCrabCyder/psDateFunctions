@@ -18,7 +18,7 @@ Describe 'Get-1stDayOfMonth - Happy Path' {
     }
 }
 
-Describe 'Get-1stDayOfMonth - Work Day' {
+Describe 'Get-1stDayOfMonth - Weekday' {
     $testCases=@(
         @{ Year=2025; Month=11; ExpectedDay=3 }
         @{ Year=2025; Month=6; ExpectedDay=2 }
@@ -27,7 +27,7 @@ Describe 'Get-1stDayOfMonth - Work Day' {
     it 'Given Year=<Year>, Month=<Month>, should return the correct date' -ForEach $testCases {
 
 
-        Get-1stDayOfMonth -Year $Year -Month $Month -WorkDay|
+        Get-1stDayOfMonth -Year $Year -Month $Month -Weekday|
             Should -BeExactly (Get-Date -year $Year -Month $Month -Day $ExpectedDay).Date
     }
 }

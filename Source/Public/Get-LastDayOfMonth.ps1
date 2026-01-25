@@ -11,11 +11,11 @@ The numeric value representing the month. This parameter is mandatory and must b
 .PARAMETER Year
 The numeric value representing the year. This parameter is mandatory and must be a integer between 1 and 9999.
 
-.PARAMETER Workday
+.PARAMETER Weekday
 If specified, the function excludes Saturday and Sunday by default and returns the first day of the month that is not a weekend. This is a convenience switch.
 
 .PARAMETER ExcludeDays
-An optional array of [System.DayOfWeek] values to exclude. When provided, the function skips over any days of the week listed here and returns the first day of the month that is not in the list. This parameter overrides the default exclusions set by -Workday.
+An optional array of [System.DayOfWeek] values to exclude. When provided, the function skips over any days of the week listed here and returns the first day of the month that is not in the list. This parameter overrides the default exclusions set by -Weekday.
 
 .EXAMPLE
 Get-LastDayOfMonth -Month 7 -Year 2024
@@ -44,13 +44,13 @@ function Get-LastDayOfMonth {
     param (
         [Parameter(Mandatory)][int]$Month,
         [Parameter(Mandatory)][int]$Year,
-        [switch]$Workday,
+        [switch]$Weekday,
         [DayOfWeek[]]$ExcludeDays
     )
     if ($Month -lt 1 -or $Month -gt 12) { throw 'Invalid Month'}
     if ($Year -lt 1 -or $Year -gt 9999) { throw 'Invalid Year'}
-    # Set default exclude days to weekend if -Workday is passed and -ExcludeDays is not
-    if ($Workday -and -not $ExcludeDays) {
+    # Set default exclude days to weekend if -Weekday is passed and -ExcludeDays is not
+    if ($Weekday -and -not $ExcludeDays) {
         $ExcludeDays = @([DayOfWeek]::Saturday, [DayOfWeek]::Sunday)
     }
 

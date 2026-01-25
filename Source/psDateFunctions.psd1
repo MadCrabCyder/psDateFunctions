@@ -26,7 +26,7 @@ CompanyName = 'Mad Crab Cyder Productions'
 Copyright = '(c) Mad Crab Cyder. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'This PowerShell module is ideal for planning, scheduling, and IT operations, enabling users to find the first and last days of a month, any variation of the nth instance, or nth last instance of a particular weekday in a month, including Patch Tuesday.'
+Description = 'This PowerShell module is ideal for planning, scheduling, and IT operations, enabling users to find the first and last days of a month, any variation of the nth instance, or nth last instance of a particular DayOfWeek in a month, including Patch Tuesday.'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''

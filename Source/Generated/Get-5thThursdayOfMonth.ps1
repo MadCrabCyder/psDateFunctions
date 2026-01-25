@@ -30,7 +30,7 @@ System.DateTime
 This function returns a System.DateTime object representing the 5th Thursday of the given month and year.
 
 .NOTES
-This function is a wrapper around Get-NthWeekdayOfMonth, specifically configured to find the 5th Thursday of the month. Ensure the 'Month' and 'Year' parameters are within their valid ranges to avoid exceptions.
+This function is a wrapper around Get-NthDayOfWeekInMonth, specifically configured to find the 5th Thursday of the month. Ensure the 'Month' and 'Year' parameters are within their valid ranges to avoid exceptions.
 
 #>
 function Get-5thThursdayOfMonth {
@@ -40,5 +40,5 @@ function Get-5thThursdayOfMonth {
         [Parameter(Mandatory)][int]$Month,
         [Parameter(Mandatory)][int]$Year
     )
-    Get-NthWeekdayOfMonth -Year $Year -Month $Month -WeekDay Thursday -Nth 5
+    Get-NthDayOfWeekInMonth -Year $Year -Month $Month -DayOfWeek Thursday -Nth 5
 }

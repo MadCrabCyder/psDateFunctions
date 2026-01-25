@@ -119,7 +119,7 @@ function $($FunctionDetails.functionName) {
         [Parameter(Mandatory)][int]`$Month,
         [Parameter(Mandatory)][int]`$Year
     )
-    $wrappedFunction -Year `$Year -Month `$Month -WeekDay $Day -Nth $N
+    $wrappedFunction -Year `$Year -Month `$Month -DayOfWeek $Day -Nth $N
 }
 "@
 }

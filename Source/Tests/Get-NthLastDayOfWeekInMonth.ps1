@@ -1,10 +1,10 @@
 BeforeAll {
     $TopLevel = Resolve-Path "$PSScriptRoot../../.."
     . $TopLevel\Source\Public\Get-LastDayOfMonth.ps1
-    . $TopLevel\Source\Public\Get-NthLAstWeekdayOfMonth.ps1
+    . $TopLevel\Source\Public\Get-NthLastDayOfWeekInMonth.ps1
 }
 
-Describe 'Get-NthLastWeekdayOfMonth - Happy Path' {
+Describe 'Get-NthLastDayOfWeekInMonth - Happy Path' {
     it 'Should return the correct date' {
 
         $testCases=@(
@@ -22,13 +22,13 @@ Describe 'Get-NthLastWeekdayOfMonth - Happy Path' {
         )
 
         foreach ($testCase in $testCases) {
-            Get-NthLastWeekdayOfMonth -Year $testCase.Year -Month $testCase.Month -WeekDay $testCase.Weekday -Nth $testCase.Nth|
+            Get-NthLastDayOfWeekInMonth -Year $testCase.Year -Month $testCase.Month -WeekDay $testCase.Weekday -Nth $testCase.Nth|
                 Should -BeExactly (Get-Date -year $testCase.Year -Month $testCase.Month -Day $testCase.ExpectedDay).Date
         }
     }
 }
 
-Describe 'Get-NthLastWeekdayOfMonth Exceptions' {
+Describe 'Get-NthLastDayOfWeekInMonth Exceptions' {
     it 'Given an invalid month, should throw an exception' {
         $testCases=@(
                 @{ Year=2023; Month=0; Weekday=[System.DayOfWeek]::Saturday; Nth=3 }
@@ -38,7 +38,7 @@ Describe 'Get-NthLastWeekdayOfMonth Exceptions' {
                 @{ Year=2021; Month=-3; Weekday=[System.DayOfWeek]::Wednesday; Nth=1}
         )
         foreach ($testCase in $testCases) {
-            { Get-NthLastWeekdayOfMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
+            { Get-NthLastDayOfWeekInMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
                 Should -Throw 'Invalid Month'
         }
     }
@@ -52,7 +52,7 @@ Describe 'Get-NthLastWeekdayOfMonth Exceptions' {
                 @{ Year=2021; Month=5; Weekday=[System.DayOfWeek]::Wednesday; Nth=-16}
         )
         foreach ($testCase in $testCases) {
-            { Get-NthLastWeekdayOfMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
+            { Get-NthLastDayOfWeekInMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
                 Should -Throw 'Invalid Nth, must be between 1 and 5'
         }
     }
@@ -65,7 +65,7 @@ Describe 'Get-NthLastWeekdayOfMonth Exceptions' {
                 @{ Year=-5; Month=4; Weekday=[System.DayOfWeek]::Thursday; Nth=3 }
         )
         foreach ($testCase in $testCases) {
-            { Get-NthLastWeekdayOfMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
+            { Get-NthLastDayOfWeekInMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
                 Should -Throw 'Invalid Year'
         }
     }
@@ -81,7 +81,7 @@ Describe 'Get-NthLastWeekdayOfMonth Exceptions' {
         foreach ($testCase in $testCases) {
             {
 
-                Get-NthLastWeekdayOfMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
+                Get-NthLastDayOfWeekInMonth -Month $testCase.Month -Year $testCase.Year -WeekDay $testCase.Weekday -Nth $testCase.Nth } |
                     Should -Throw 'That day does not exist'
         }
     }

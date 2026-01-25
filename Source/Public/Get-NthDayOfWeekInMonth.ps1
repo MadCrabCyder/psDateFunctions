@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Calculates and returns the Nth occurrence of a specific weekday in a given month and year.
+Calculates and returns the Nth occurrence of a specific DayOfWeek in a given month and year.
 
 .DESCRIPTION
-The Get-NthWeekdayOfMonth function determines the Nth occurrence of a specified weekday within a particular month and year. It is useful for finding specific weekdays for scheduling events, meetings, or for any scenario where the ordinal position of a weekday within a month is needed.
+The Get-NthDayOfWeekInMonth function determines the Nth occurrence of a specified DayOfWeek within a particular month and year. It is useful for finding specific DayOfWeeks for scheduling events, meetings, or for any scenario where the ordinal position of a DayOfWeek within a month is needed.
 
 .PARAMETER Month
 The numeric value representing the month. This parameter is mandatory and must be an integer between 1 (January) and 12 (December).
@@ -12,28 +12,28 @@ The numeric value representing the month. This parameter is mandatory and must b
 The numeric value representing the year. This parameter is mandatory and must be a integer between 1 and 9999.
 
 .PARAMETER Nth
-The ordinal instance of the weekday within the month. For example, 1 for the first occurrence, 2 for the second, etc. This parameter is mandatory and must be a positive integer between 1 and 5.
+The ordinal instance of the DayOfWeek within the month. For example, 1 for the first occurrence, 2 for the second, etc. This parameter is mandatory and must be a positive integer between 1 and 5.
 
-.PARAMETER WeekDay
+.PARAMETER DayOfWeek
 The day of the week to find. This parameter is mandatory and accepts a [System.DayOfWeek] enum value (e.g., 'Sunday', 'Monday', 'Tuesday', etc.).
 
 .EXAMPLE
-Get-NthWeekdayOfMonth -Month 3 -Year 2024 -Nth 2 -WeekDay 'Tuesday'
+Get-NthDayOfWeekInMonth -Month 3 -Year 2024 -Nth 2 -DayOfWeek 'Tuesday'
 
 Returns the second Tuesday of March 2024 as a System.DateTime object.
 
 .EXAMPLE
-$meetingDay = Get-NthWeekdayOfMonth -Month 10 -Year 2023 -Nth 1 -WeekDay 'Monday'
+$meetingDay = Get-NthDayOfWeekInMonth -Month 10 -Year 2023 -Nth 1 -DayOfWeek 'Monday'
 Write-Output "The first Monday of October 2023 is on: $meetingDay"
 
 Calculates the first Monday of October 2023, assigns it to the variable $meetingDay, and prints it.
 
 .INPUTS
-None. You cannot pipe objects to Get-NthWeekdayOfMonth.
+None. You cannot pipe objects to Get-NthDayOfWeekInMonth.
 
 .OUTPUTS
 System.DateTime
-Returns a System.DateTime object representing the Nth occurrence of the specified weekday in the given month and year.
+Returns a System.DateTime object representing the Nth occurrence of the specified DayOfWeek in the given month and year.
 
 .NOTES
 - Ensure the 'Month' and 'Year' parameters are within their valid ranges to avoid exceptions.
@@ -41,13 +41,13 @@ Returns a System.DateTime object representing the Nth occurrence of the specifie
 - The function will throw an exception of the Nth parameter is outside the range 1 to 5.
 
 #>
-function Get-NthWeekdayOfMonth {
+function Get-NthDayOfWeekInMonth {
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,
         [Parameter(Mandatory)][int]$Year,
         [Parameter(Mandatory)][int]$Nth,
-        [Parameter(Mandatory)][System.DayOfWeek]$WeekDay
+        [Parameter(Mandatory)][System.DayOfWeek]$DayOfWeek
     )
 
     if ($Month -lt 1 -or $Month -gt 12) { throw 'Invalid Month'}
@@ -58,7 +58,7 @@ function Get-NthWeekdayOfMonth {
 
     $result =  $firstDayOfMonth.AddDays(
         (
-            (7 + [System.DayOfWeek]::$WeekDay - $firstDayOfMonth.DayOfWeek) % 7
+            (7 + [System.DayOfWeek]::$DayOfWeek - $firstDayOfMonth.DayOfWeek) % 7
         ) + 7 * ($Nth -1)
     )
 

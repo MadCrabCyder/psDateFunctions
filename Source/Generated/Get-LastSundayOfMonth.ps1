@@ -30,7 +30,7 @@ System.DateTime
 This function returns a System.DateTime object representing the Last Sunday of the given month and year.
 
 .NOTES
-This function is a wrapper around Get-NthLastWeekdayOfMonth, specifically configured to find the Last Sunday of the month. Ensure the 'Month' and 'Year' parameters are within their valid ranges to avoid exceptions.
+This function is a wrapper around Get-NthLastDayOfWeekInMonth, specifically configured to find the Last Sunday of the month. Ensure the 'Month' and 'Year' parameters are within their valid ranges to avoid exceptions.
 
 #>
 function Get-LastSundayOfMonth {
@@ -40,5 +40,5 @@ function Get-LastSundayOfMonth {
         [Parameter(Mandatory)][int]$Month,
         [Parameter(Mandatory)][int]$Year
     )
-    Get-NthLastWeekdayOfMonth -Year $Year -Month $Month -WeekDay Sunday -Nth 1
+    Get-NthLastDayOfWeekInMonth -Year $Year -Month $Month -DayOfWeek Sunday -Nth 1
 }
