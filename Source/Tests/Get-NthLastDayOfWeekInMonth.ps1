@@ -1,6 +1,6 @@
 BeforeAll {
     $TopLevel = Resolve-Path "$PSScriptRoot../../.."
-    . $TopLevel\Source\Public\Get-LastDayOfMonth.ps1
+    . $TopLevel\Source\Public\Get-LastDayInMonth.ps1
     . $TopLevel\Source\Public\Get-NthLastDayOfWeekInMonth.ps1
 }
 

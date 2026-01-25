@@ -25,7 +25,7 @@ function Get-OrdinalNumber {
 #     $last = ($WrappedFunction -match 'Last') ? "Last" : ""
 #     $Nth = ($last -and $Nth -eq '1st') ? "" : $Nth
 
-#     return "Get-$($Nth)$($last)$($Day)OfMonth"
+#     return "Get-$($Nth)$($last)$($Day)InMonth"
 # }
 
 # function Get-WrapperFunctionDescription {
@@ -53,7 +53,7 @@ function Get-WrapperFunctionDetails {
 
     $description = "$($NthOrd) $($last) $($Day)" -replace '\s\s+', ' ' -replace '^\s+', ''
 
-    $functionName = "Get-$($description -replace '\s','' )OfMonth"
+    $functionName = "Get-$($description -replace '\s','' )InMonth"
 
     $alias = if ($N -eq 2 -and $Day -eq "Tuesday" -and -not $last) { "Get-PatchTuesday" } else { "" }
 

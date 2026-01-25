@@ -55,11 +55,11 @@ function Get-NthLastDayOfWeekInMonth {
     if ($Year -lt 1 -or $Year -gt 9999) { throw 'Invalid Year'}
     if ($Nth -lt 1 -or $Nth -gt 5) { throw 'Invalid Nth, must be between 1 and 5' }
 
-    $lastDayOfMonth = Get-LastDayOfMonth -Year $Year -Month $Month
+    $lastDayInMonth = Get-LastDayInMonth -Year $Year -Month $Month
 
-    $result =  $lastDayOfMonth.AddDays(
+    $result =  $lastDayInMonth.AddDays(
         (
-            ([System.DayOfWeek]::$DayOfWeek - $lastDayOfMonth.DayOfWeek -7 ) % -7
+            ([System.DayOfWeek]::$DayOfWeek - $lastDayInMonth.DayOfWeek -7 ) % -7
         ) - 7 * ($Nth -1)
     )
 

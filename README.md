@@ -12,7 +12,7 @@ It provides a comprehensive set of tools for finding specific dates within a mon
 
 **Patch Tuesday**: For the IT warriors out there, calculating Patch Tuesday has never been easier. Plan your software update parties with precision and keep the digital realm secure, all while ensuring the punch bowl never empties.
 
-## ⚠️ Terminology Update coming soon in v1.5 – Potential Breaking Changes
+## ⚠️ Terminology Update coming soon in v1.5 – Breaking Changes
 
 As of version 1.5, the module introduces clearer and more precise terminology to avoid ambiguity around day classifications. These changes affect function names, parameter names, and documentation.
 
@@ -28,10 +28,15 @@ Previous versions used terms like Weekday to refer to any day of the week, inclu
 | `Weekday`   | Monday through Friday only                |
 | `Weekend`   | Saturday and Sunday only                  |
 
-### Changes
-Rename function `Get-NthWeekdayOfMonth` to `Get-NthDayOfWeekInMonth`
-Rename function `Get-NthLastWeekdayOfMonth` to `Get-NthLastDayOfWeekInMonth`
-Rename parameter
+### Breaking Changes
+- Rename `Get-NthWeekdayInMonth` to `Get-NthDayOfWeekInMonth`
+- Rename `Get-NthLastWeekdayInMonth` to `Get-NthLastDayOfWeekInMonth`
+- Rename parameter `WeekDay` to `DayOfWeek`
+- Rename parameter `Workday` to `Weekday`
+- For consistency across the module, all functions previously named `*OfMonth` have been renamed to `*InMonth` (for example, `Get-1stSundayOfMonth` → `Get-1stSundayInMonth`, `Get-LastFridayOfMonth` → `Get-LastFridayInMonth`)
+
+> ⚠️ If your scripts reference the old `*OfMonth` function names or rely on previous terminology, you will need to update them to use the new `*InMonth` names and parameter conventions.
+
 
 ## Installation
 Summon this module from PowerShell Gallery:
@@ -41,109 +46,113 @@ Install-Module -Name psDateFunctions
 
 ## Functions Included
 
-- Get-1stDayOfMonth
-- Get-FirstDayOfMonth (Alias -> Get-1stDayOfMonth)
-- Get-LastDayOfMonth
+- Get-1stDayInMonth (Alias -> Get-FirstDayInMonth)
+- Get-1stWeekdayInMonth (Alias -> Get-FirstWeekdayInMonth)
+- Get-LastDayInMonth
+- Get-LastWeekdayInMonth
 - Get-NthDayOfWeekInMonth
 - Get-NthLastDayOfWeekInMonth
-- Get-PatchTuesday (Alias -> Get-2ndTuesdayOfMonth)
+- Get-NearestWeekday
 
-- Get-1stSundayOfMonth
-- Get-1stMondayOfMonth
-- Get-1stTuesdayOfMonth
-- Get-1stWednesdayOfMonth
-- Get-1stThursdayOfMonth
-- Get-1stFridayOfMonth
-- Get-1stSaturdayOfMonth
-- Get-2ndSundayOfMonth
-- Get-2ndMondayOfMonth
-- Get-2ndTuesdayOfMonth
-- Get-2ndWednesdayOfMonth
-- Get-2ndThursdayOfMonth
-- Get-2ndFridayOfMonth
-- Get-2ndSaturdayOfMonth
-- Get-3rdSundayOfMonth
-- Get-3rdMondayOfMonth
-- Get-3rdTuesdayOfMonth
-- Get-3rdWednesdayOfMonth
-- Get-3rdThursdayOfMonth
-- Get-3rdFridayOfMonth
-- Get-3rdSaturdayOfMonth
-- Get-4thSundayOfMonth
-- Get-4thMondayOfMonth
-- Get-4thTuesdayOfMonth
-- Get-4thWednesdayOfMonth
-- Get-4thThursdayOfMonth
-- Get-4thFridayOfMonth
-- Get-4thSaturdayOfMonth
-- Get-5thSundayOfMonth
-- Get-5thMondayOfMonth
-- Get-5thTuesdayOfMonth
-- Get-5thWednesdayOfMonth
-- Get-5thThursdayOfMonth
-- Get-5thFridayOfMonth
-- Get-5thSaturdayOfMonth
+- Get-1stSundayInMonth
+- Get-1stMondayInMonth
+- Get-1stTuesdayInMonth
+- Get-1stWednesdayInMonth
+- Get-1stThursdayInMonth
+- Get-1stFridayInMonth
+- Get-1stSaturdayInMonth
+- Get-2ndSundayInMonth
+- Get-2ndMondayInMonth
+- Get-2ndTuesdayInMonth (Alias -> Get-PatchTuesday)
+- Get-2ndWednesdayInMonth
+- Get-2ndThursdayInMonth
+- Get-2ndFridayInMonth
+- Get-2ndSaturdayInMonth
+- Get-3rdSundayInMonth
+- Get-3rdMondayInMonth
+- Get-3rdTuesdayInMonth
+- Get-3rdWednesdayInMonth
+- Get-3rdThursdayInMonth
+- Get-3rdFridayInMonth
+- Get-3rdSaturdayInMonth
+- Get-4thSundayInMonth
+- Get-4thMondayInMonth
+- Get-4thTuesdayInMonth
+- Get-4thWednesdayInMonth
+- Get-4thThursdayInMonth
+- Get-4thFridayInMonth
+- Get-4thSaturdayInMonth
+- Get-5thSundayInMonth
+- Get-5thMondayInMonth
+- Get-5thTuesdayInMonth
+- Get-5thWednesdayInMonth
+- Get-5thThursdayInMonth
+- Get-5thFridayInMonth
+- Get-5thSaturdayInMonth
 
-- Get-LastSundayOfMonth
-- Get-LastMondayOfMonth
-- Get-LastTuesdayOfMonth
-- Get-LastWednesdayOfMonth
-- Get-LastThursdayOfMonth
-- Get-LastFridayOfMonth
-- Get-LastSaturdayOfMonth
-- Get-2ndLastSundayOfMonth
-- Get-2ndLastMondayOfMonth
-- Get-2ndLastTuesdayOfMonth
-- Get-2ndLastWednesdayOfMonth
-- Get-2ndLastThursdayOfMonth
-- Get-2ndLastFridayOfMonth
-- Get-2ndLastSaturdayOfMonth
-- Get-3rdLastSundayOfMonth
-- Get-3rdLastMondayOfMonth
-- Get-3rdLastTuesdayOfMonth
-- Get-3rdLastWednesdayOfMonth
-- Get-3rdLastThursdayOfMonth
-- Get-3rdLastFridayOfMonth
-- Get-3rdLastSaturdayOfMonth
-- Get-4thLastSundayOfMonth
-- Get-4thLastMondayOfMonth
-- Get-4thLastTuesdayOfMonth
-- Get-4thLastWednesdayOfMonth
-- Get-4thLastThursdayOfMonth
-- Get-4thLastFridayOfMonth
-- Get-4thLastSaturdayOfMonth
-- Get-5thLastSundayOfMonth
-- Get-5thLastMondayOfMonth
-- Get-5thLastTuesdayOfMonth
-- Get-5thLastWednesdayOfMonth
-- Get-5thLastThursdayOfMonth
-- Get-5thLastFridayOfMonth
-- Get-5thLastSaturdayOfMonth
+- Get-LastSundayInMonth
+- Get-LastMondayInMonth
+- Get-LastTuesdayInMonth
+- Get-LastWednesdayInMonth
+- Get-LastThursdayInMonth
+- Get-LastFridayInMonth
+- Get-LastSaturdayInMonth
+- Get-2ndLastSundayInMonth
+- Get-2ndLastMondayInMonth
+- Get-2ndLastTuesdayInMonth
+- Get-2ndLastWednesdayInMonth
+- Get-2ndLastThursdayInMonth
+- Get-2ndLastFridayInMonth
+- Get-2ndLastSaturdayInMonth
+- Get-3rdLastSundayInMonth
+- Get-3rdLastMondayInMonth
+- Get-3rdLastTuesdayInMonth
+- Get-3rdLastWednesdayInMonth
+- Get-3rdLastThursdayInMonth
+- Get-3rdLastFridayInMonth
+- Get-3rdLastSaturdayInMonth
+- Get-4thLastSundayInMonth
+- Get-4thLastMondayInMonth
+- Get-4thLastTuesdayInMonth
+- Get-4thLastWednesdayInMonth
+- Get-4thLastThursdayInMonth
+- Get-4thLastFridayInMonth
+- Get-4thLastSaturdayInMonth
+- Get-5thLastSundayInMonth
+- Get-5thLastMondayInMonth
+- Get-5thLastTuesdayInMonth
+- Get-5thLastWednesdayInMonth
+- Get-5thLastThursdayInMonth
+- Get-5thLastFridayInMonth
+- Get-5thLastSaturdayInMonth
 
 ## Examples
 
 Want to know when to host your next wizard's conclave (or just a friendly get-together)? Here's how:
 ```powershell
 # Grab the first day of the month to start planning.
-Get-1stDayOfMonth -Month 11 -Year 2024
+Get-1stDayInMonth -Month 11 -Year 2024
 
 # Get the first Weekday of the month, you don't work on weekends, right?
-Get-1stDayOfMonth -Month 11 -Year 2024 -Weekday
+Get-1stDayInMonth -Month 11 -Year 2024 -Weekday
 
 # Get the first day of the month, but not weekend or Monday, because no one likes Mondays.
-Get-1stDayOfMonth -Month 10 -Year 2024 -Exclude Saturday, Sunday, Monday
+Get-1stDayInMonth -Month 10 -Year 2024 -Exclude Saturday, Sunday, Monday
 
-# Pay day is on the 15th of the month, except if it's a weekend, then the Friday before.
+# Payday is the 15th… unless it’s a weekend. Then finance kindly moves it to Friday.
 Get-NearestWeekday -Day 15 -Month 6 -Year 2025 -Before
 
 # Find out when the next "Patch Tuesday" falls to avoid any IT calamities.
 Get-PatchTuesday -Month 12 -Year 2025
 
 # Discover the 3rd Friday of the month for that long-overdue movie night.
-Get-3rdFridayOfMonth -Month 10 -Year 2024
+Get-3rdFridayInMonth -Month 10 -Year 2024
 
 # If you're really brave, you can find the 5th last Monday of April 2007 - I don't know why either.
-Get-5thLastMondayOfMonth -Month 4 -Year 2007
+Get-5thLastMondayInMonth -Month 4 -Year 2007
+
+# Get the 1st Friday of every month next year. Because recurring drinks are important.
+1..12 | ForEach-Object { Get-1stFridayInMonth -Month $_ -Year 2026 }
 ```
 
 Whether you're managing event schedules, performing date-based calculations, or coordinating IT maintenance tasks, this module provides the essential tools to find relevant dates with ease and precision. Its intuitive design and comprehensive coverage of date-related queries make it an indispensable tool for PowerShell users seeking to streamline their date manipulation tasks.
@@ -154,13 +163,13 @@ Whether you're managing event schedules, performing date-based calculations, or 
 > ### 1.5.0
 > - Terminology update for Weekday, DayOfWeek, etc.
 > - rename functions and parameters inline with new terminology
-> - Introducing new function Get-NearestWeekday
+> - Introducing new functions `Get-NearestWeekday`, `Get-1stWeekdayInMonth` and `Get-LastWeekdayInMonth`
 
 ## Release Notes
 
 > ### 1.1.0 (23-Jan-2026)
-> - Added `-Weekday` switch to `Get-1stDayOfMonth` and `Get-LastDayOfMonth` - Enables skipping weekends by default (Saturday and Sunday) to return the first/last weekday of a month.
-> - Added `-ExcludeDays` parameter to `Get-1stDayOfMonth` and `Get-LastDayOfMonth` - Allows customization of which days of the week to skip (e.g., `Sunday, Monday`), offering fine-grained control for custom workweek definitions.
+> - Added `-Weekday` switch to `Get-1stDayInMonth` and `Get-LastDayInMonth` - Enables skipping weekends by default (Saturday and Sunday) to return the first/last weekday of a month.
+> - Added `-ExcludeDays` parameter to `Get-1stDayInMonth` and `Get-LastDayInMonth` - Allows customization of which days of the week to skip (e.g., `Sunday, Monday`), offering fine-grained control for custom workweek definitions.
 
 > ### 1.0.0 (25-Mar-2024)
 > - Promote 0.0.3 to release version 1!
@@ -171,7 +180,7 @@ Whether you're managing event schedules, performing date-based calculations, or 
 > - Added restriction for Nth to functions Get-NthDayOfWeekInMonth and Get-NthLastDayOfWeekInMonth
 > - Added validation for Year to be between 1 and 9999
 > - Refactored meta functions
-> - Renamed function Get-FirstDayOfMonth to Get-1stDayOfMonth for consistancy
+> - Renamed function Get-FirstDayInMonth to Get-1stDayInMonth for consistancy
 > - Removed CmdletBinding attribute from functions
 
 > ### 0.0.2 (19-Mar-2024)
