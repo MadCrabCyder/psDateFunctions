@@ -1,14 +1,6 @@
-name: Run Pester Tests
+name: Pester Tests
 
-on:
-  push:
-    paths:
-      - '**.ps1'
-      - '**.Tests.ps1'
-  pull_request:
-    paths:
-      - '**.ps1'
-      - '**.Tests.ps1'
+on: [push, pull_request]
 
 jobs:
   test:

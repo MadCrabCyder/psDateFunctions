@@ -1,5 +1,7 @@
 # psDateFunctions
-[![PSGallery Version](https://img.shields.io/powershellgallery/v/psDateFunctions.svg?style=flat&logo=powershell&label=PSGallery%20Version)](https://www.powershellgallery.com/packages/psDateFunctions) [![PSGallery Downloads](https://img.shields.io/powershellgallery/dt/psDateFunctions.svg?style=flat&logo=powershell&label=PSGallery%20Downloads)](https://www.powershellgallery.com/packages/psDateFunctions)
+![Published Version](https://img.shields.io/powershellgallery/v/psDateFunctions.svg?style=flat&logo=powershell&label=Published%20Version)
+![Downloads](https://img.shields.io/powershellgallery/dt/psDateFunctions.svg?style=flat&logo=powershell&label=PSGallery%20Downloads)
+![Tests](https://github.com/MadCrabCyder/psDateFunctions/actions/workflows/test-run-pester.yml/badge.svg)
 
 
 This PowerShell module began it's life when I had a requirement to calculate 'Patch Tuesday', the 2nd Tuesday of the Month, to automate patch release schedules. I have now extended it to cover all variations of the nth instance, or nth last instance of a particular DayOfWeek in a month, including Patch Tuesday.
