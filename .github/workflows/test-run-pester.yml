@@ -1,0 +1,36 @@
+name: Run Pester Tests
+
+on:
+  push:
+    paths:
+      - '**.ps1'
+      - '**.Tests.ps1'
+  pull_request:
+    paths:
+      - '**.ps1'
+      - '**.Tests.ps1'
+
+jobs:
+  test:
+    name: Pester Tests
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up PowerShell
+        uses: actions/setup-powershell@v2
+        with:
+          pwsh-version: 'latest'
+
+      - name: Install Pester
+        shell: pwsh
+        run: |
+          Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+          Import-Module Pester
+
+      - name: Run Pester Tests
+        shell: pwsh
+        run: |
+          Invoke-Pester -Path ./Source/Tests -Output Detailed
