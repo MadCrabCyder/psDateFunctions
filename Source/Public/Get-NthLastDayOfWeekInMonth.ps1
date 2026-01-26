@@ -42,7 +42,6 @@ Returns a System.DateTime object representing the Nth occurrence of the specifie
 
 #>
 function Get-NthLastDayOfWeekInMonth {
-    [CmdletBinding()]
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,

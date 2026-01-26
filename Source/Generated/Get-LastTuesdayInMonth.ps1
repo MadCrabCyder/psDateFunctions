@@ -34,7 +34,6 @@ This function is a wrapper around Get-NthLastDayOfWeekInMonth, specifically conf
 
 #>
 function Get-LastTuesdayInMonth {
-    [Alias('')]
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,

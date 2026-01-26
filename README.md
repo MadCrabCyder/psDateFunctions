@@ -10,17 +10,17 @@ It provides a comprehensive set of tools for finding specific dates within a mon
 
 **First and Last Day of the Month**: Quickly retrieve the first or last date of any given month, simplifying scheduling and planning tasks that depend on these anchor points.
 
+**First and Last Weekday of the Month**: Easily determine the first or last business day (Monday–Friday) of any month. Perfect for making sure important work doesn’t accidentally land on a weekend.
+
+**Find the nearest Weekday**: Got a date that falls on a weekend? No problem. Automatically roll forward or backward to the nearest weekday, ideal for handling paydays, or any schedule that refuses to acknowledge Saturdays and Sundays.
+
 **Nth Instance Wizardry**: Need to schedule a meeting that doesn't clash with your secret superhero duties? Specify an ordinal number (e.g., 1st, 2nd, 3rd) alongside a day of the week and find the perfect date to balance both worlds.
 
 **Patch Tuesday**: For the IT warriors out there, calculating Patch Tuesday has never been easier. Plan your software update parties with precision and keep the digital realm secure, all while ensuring the punch bowl never empties.
 
-## ⚠️ Terminology Update coming soon in v1.5 – Breaking Changes
+## ⚠️ Terminology Update in v1.5 – Breaking Changes
 
 As of version 1.5, the module introduces clearer and more precise terminology to avoid ambiguity around day classifications. These changes affect function names, parameter names, and documentation.
-
-### Why the Change?
-
-Previous versions used terms like Weekday to refer to any day of the week, including weekends. This could be confusing since 'weekday' is commonly understood to mean Monday–Friday. To improve clarity and alignment with common standards and developer expectations, the terminology has been updated.
 
 ### New Terminology
 
@@ -30,12 +30,26 @@ Previous versions used terms like Weekday to refer to any day of the week, inclu
 | `Weekday`   | Monday through Friday only                |
 | `Weekend`   | Saturday and Sunday only                  |
 
+### Why the Change?
+
+Previous versions used terms like Weekday to refer to any day of the week, including weekends; which can be misleading, since "weekday" is commonly understood to mean Monday–Friday.
+
+To improve clarity and align with standard conventions and developer expectations, the module has adopted more precise naming:
+- **DayOfWeek** is now used to refer to any day (Sunday–Saturday)
+- **Weekday** is reserved for business days (Monday–Friday)
+- **Weekend** explicitly means Saturday and Sunday
+
+### Naming Convention & Function Renames
+
+When the Weekday parameter was renamed to DayOfWeek, some function names (like `Get-NthDayOfWeekOfMonth`) became awkward and did not roll off the tongue well. To improve readability and fluency, those were updated to use **InMonth** instead of **OfMonth**.
+
+This change highlighted inconsistencies in the rest of the module, so for consistency across the board, all functions previously named with **OfMonth** have been renamed to **InMonth**.
+
+
 ### Breaking Changes
-- Rename `Get-NthWeekdayInMonth` to `Get-NthDayOfWeekInMonth`
-- Rename `Get-NthLastWeekdayInMonth` to `Get-NthLastDayOfWeekInMonth`
+- For consistency across the module, all functions previously named `*OfMonth` have been renamed to `*InMonth` (for example, `Get-1stSundayOfMonth` → `Get-1stSundayInMonth`, `Get-LastFridayOfMonth` → `Get-LastFridayInMonth`)
 - Rename parameter `WeekDay` to `DayOfWeek`
 - Rename parameter `Workday` to `Weekday`
-- For consistency across the module, all functions previously named `*OfMonth` have been renamed to `*InMonth` (for example, `Get-1stSundayOfMonth` → `Get-1stSundayInMonth`, `Get-LastFridayOfMonth` → `Get-LastFridayInMonth`)
 
 > ⚠️ If your scripts reference the old `*OfMonth` function names or rely on previous terminology, you will need to update them to use the new `*InMonth` names and parameter conventions.
 
@@ -55,6 +69,7 @@ Install-Module -Name psDateFunctions
 - Get-NthDayOfWeekInMonth
 - Get-NthLastDayOfWeekInMonth
 - Get-NearestWeekday
+- Get-PatchTuesday
 
 - Get-1stSundayInMonth
 - Get-1stMondayInMonth
@@ -65,7 +80,7 @@ Install-Module -Name psDateFunctions
 - Get-1stSaturdayInMonth
 - Get-2ndSundayInMonth
 - Get-2ndMondayInMonth
-- Get-2ndTuesdayInMonth (Alias -> Get-PatchTuesday)
+- Get-2ndTuesdayInMonth
 - Get-2ndWednesdayInMonth
 - Get-2ndThursdayInMonth
 - Get-2ndFridayInMonth
@@ -128,6 +143,7 @@ Install-Module -Name psDateFunctions
 - Get-5thLastFridayInMonth
 - Get-5thLastSaturdayInMonth
 
+
 ## Examples
 
 Want to know when to host your next wizard's conclave (or just a friendly get-together)? Here's how:
@@ -160,14 +176,14 @@ Get-5thLastMondayInMonth -Month 4 -Year 2007
 Whether you're managing event schedules, performing date-based calculations, or coordinating IT maintenance tasks, this module provides the essential tools to find relevant dates with ease and precision. Its intuitive design and comprehensive coverage of date-related queries make it an indispensable tool for PowerShell users seeking to streamline their date manipulation tasks.
 
 
-## Coming Soon
-
-> ### 1.5.0
-> - Terminology update for Weekday, DayOfWeek, etc.
-> - rename functions and parameters inline with new terminology
-> - Introducing new functions `Get-NearestWeekday`, `Get-1stWeekdayInMonth` and `Get-LastWeekdayInMonth`
-
 ## Release Notes
+
+> ### 1.5.0 (26-Jan-2026)
+> - Terminology update for Weekday, DayOfWeek, etc.
+> - Rename functions previously named `*OfMonth` to `*InMonth`
+> - rename functions and parameters inline with new terminology
+> - Introduce new functions `Get-1stWeekdayInMonth`, `Get-LastWeekdayInMonth` and `Get-NearestWeekday`
+> - Promote `Get-PatchTuesday` to a wrapper function instead of alias of `Get-2ndTuesdayInMonth`
 
 > ### 1.1.0 (23-Jan-2026)
 > - Added `-Weekday` switch to `Get-1stDayInMonth` and `Get-LastDayInMonth` - Enables skipping weekends by default (Saturday and Sunday) to return the first/last weekday of a month.

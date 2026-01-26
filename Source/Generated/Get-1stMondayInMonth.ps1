@@ -34,7 +34,6 @@ This function is a wrapper around Get-NthDayOfWeekInMonth, specifically configur
 
 #>
 function Get-1stMondayInMonth {
-    [Alias('')]
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,

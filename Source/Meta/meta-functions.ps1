@@ -55,7 +55,7 @@ function Get-WrapperFunctionDetails {
 
     $functionName = "Get-$($description -replace '\s','' )InMonth"
 
-    $alias = if ($N -eq 2 -and $Day -eq "Tuesday" -and -not $last) { "Get-PatchTuesday" } else { "" }
+    $alias = "" # if ($N -eq 2 -and $Day -eq "Tuesday" -and -not $last) { "Get-PatchTuesday" } else { "" }
 
     return @{ FunctionName = $functionName; Description = $description; Alias = $alias }
 }
@@ -113,7 +113,6 @@ This function is a wrapper around $wrappedFunction, specifically configured to f
 
 #>
 function $($FunctionDetails.functionName) {
-    [Alias('$($FunctionDetails.Alias)')]
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]`$Month,

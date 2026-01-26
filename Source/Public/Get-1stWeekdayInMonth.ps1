@@ -17,7 +17,6 @@ An optional array of [System.DayOfWeek] values to exclude. When provided, the fu
 #>
 function Get-1stWeekdayInMonth {
     [Alias('Get-FirstWeekdayInMonth')]
-    [CmdletBinding()]
     [OutputType([datetime])]
     param (
         [Parameter(Mandatory)][int]$Month,

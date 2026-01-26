@@ -28,11 +28,11 @@ Describe 'Get-WrapperFunctionDescription' {
             $result.Description | Should -Be $Expected.Description
         }
 
-        it 'Should return the correct function Alias' {
+        # it 'Should return the correct function Alias' {
 
-            $result = Get-WrapperFunctionDetails -WrappedFunction $wrappedFunction -Day $Day -N $N
-            $result.Alias | Should -Be $Expected.Alias
-        }
+        #     $result = Get-WrapperFunctionDetails -WrappedFunction $wrappedFunction -Day $Day -N $N
+        #     $result.Alias | Should -Be $Expected.Alias
+        # }
 
     }
 }

@@ -16,7 +16,6 @@ An optional array of [System.DayOfWeek] values to exclude. When provided, the fu
 
 #>
 function Get-LastWeekdayInMonth {
-    [CmdletBinding()]
     [OutputType([datetime])]
     param (
         [Parameter(Mandatory)][int]$Month,
