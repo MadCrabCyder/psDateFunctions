@@ -178,6 +178,12 @@ Whether you're managing event schedules, performing date-based calculations, or 
 
 ## Release Notes
 
+> ### 1.5.2 (05-Jun-2026)
+> - Improve efficiency of core public date functions by replacing `Get-Date` month anchor creation with direct `[datetime]::new(...)` construction
+> - Simplify `Get-LastDayInMonth` to use `[datetime]::DaysInMonth(...)` for direct end-of-month calculation
+> - Inline direct month anchor calculation in `Get-NthDayOfWeekInMonth` and `Get-NthLastDayOfWeekInMonth`
+> - Make `DayOfWeek` arithmetic explicit in nth date calculations
+
 > ### 1.5.1 (04-Jun-2026)
 > - Rename `Get-NthDayOfWeekInMonth` and `Get-NthLastDayOfWeekInMonth` test files to `*.Tests.ps1` so Pester discovers them
 > - Update nth date tests from `-WeekDay` to `-DayOfWeek`

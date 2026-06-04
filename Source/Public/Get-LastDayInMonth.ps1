@@ -54,7 +54,7 @@ function Get-LastDayInMonth {
         $ExcludeDays = @([DayOfWeek]::Saturday, [DayOfWeek]::Sunday)
     }
 
-    $date = (Get-Date -Year $Year -Month ($Month+1) -Day 1).Date.AddDays(-1)
+    $date = [datetime]::new($Year, $Month, [datetime]::DaysInMonth($Year, $Month))
 
     while ($ExcludeDays -and $ExcludeDays -contains $date.DayOfWeek) {
         $date = $date.AddDays(-1)

@@ -66,7 +66,7 @@ function Get-1stDayInMonth {
         $ExcludeDays = @([DayOfWeek]::Saturday, [DayOfWeek]::Sunday)
     }
 
-    $date = Get-Date -Year $Year -Month $Month -Day 1
+    $date = [datetime]::new($Year, $Month, 1)
 
     while ($ExcludeDays -and $ExcludeDays -contains $date.DayOfWeek) {
         $date = $date.AddDays(1)

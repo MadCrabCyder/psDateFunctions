@@ -54,11 +54,11 @@ function Get-NthDayOfWeekInMonth {
     if ($Year -lt 1 -or $Year -gt 9999) { throw 'Invalid Year'}
     if ($Nth -lt 1 -or $Nth -gt 5) { throw 'Invalid Nth, must be between 1 and 5' }
 
-    $firstDayInMonth = Get-1stDayInMonth -Year $Year -Month $Month
+    $firstDayInMonth = [datetime]::new($Year, $Month, 1)
 
-    $result =  $firstDayInMonth.AddDays(
+    $result = $firstDayInMonth.AddDays(
         (
-            (7 + [System.DayOfWeek]::$DayOfWeek - $firstDayInMonth.DayOfWeek) % 7
+            (7 + [int]$DayOfWeek - [int]$firstDayInMonth.DayOfWeek) % 7
         ) + 7 * ($Nth -1)
     )
 
