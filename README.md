@@ -178,6 +178,11 @@ Whether you're managing event schedules, performing date-based calculations, or 
 
 ## Release Notes
 
+> ### 1.5.1 (04-Jun-2026)
+> - Rename `Get-NthDayOfWeekInMonth` and `Get-NthLastDayOfWeekInMonth` test files to `*.Tests.ps1` so Pester discovers them
+> - Update nth date tests from `-WeekDay` to `-DayOfWeek`
+> - Normalize remaining loop-style test cases to Pester `-ForEach`
+
 > ### 1.5.0 (26-Jan-2026)
 > - Terminology update for Weekday, DayOfWeek, etc.
 > - Rename functions previously named `*OfMonth` to `*InMonth`

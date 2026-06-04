@@ -4,36 +4,27 @@ BeforeAll {
 }
 
 Describe 'Get-LastDayInMonth - Happy Path' {
-    it 'Should return the correct date' {
+    $testCases=@(
+        @{ Year=2008; Month=11; ExpectedDay=30 }
+        @{ Year=2010; Month=4; ExpectedDay=30 }
+        @{ Year=2013; Month=1; ExpectedDay=31 }
+        @{ Year=2024; Month=2; ExpectedDay=29 }
+    )
 
-
-        $testCases=@(
-            @{ Year=2008; Month=11; ExpectedDay=30 }
-            @{ Year=2010; Month=4; ExpectedDay=30 }
-            @{ Year=2013; Month=1; ExpectedDay=31 }
-            @{ Year=2024; Month=2; ExpectedDay=29 }
-
-        )
-
-        foreach ($testCase in $testCases) {
-            Get-LastDayInMonth -Year $testCase.Year -Month $testCase.Month |
-                Should -BeExactly (Get-Date -year $testCase.Year -Month $testCase.Month -Day $testCase.ExpectedDay).Date
-        }
+    it 'Given Year=<Year>, Month=<Month>, should return the correct date' -ForEach $testCases {
+        Get-LastDayInMonth -Year $Year -Month $Month |
+            Should -BeExactly (Get-Date -year $Year -Month $Month -Day $ExpectedDay).Date
     }
 }
 
 Describe 'Get-LastDayInMonth - Weekday' {
-    it 'Should return the correct date' {
+    $testCases=@(
+        @{ Year=2025; Month=8; ExpectedDay=29 }
+    )
 
-
-        $testCases=@(
-            @{ Year=2025; Month=8; ExpectedDay=29 }
-        )
-
-        foreach ($testCase in $testCases) {
-            Get-LastDayInMonth -Year $testCase.Year -Month $testCase.Month -Weekday |
-                Should -BeExactly (Get-Date -year $testCase.Year -Month $testCase.Month -Day $testCase.ExpectedDay).Date
-        }
+    it 'Given Year=<Year>, Month=<Month>, should return the correct weekday date' -ForEach $testCases {
+        Get-LastDayInMonth -Year $Year -Month $Month -Weekday |
+            Should -BeExactly (Get-Date -year $Year -Month $Month -Day $ExpectedDay).Date
     }
 }
 
