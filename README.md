@@ -178,6 +178,10 @@ Whether you're managing event schedules, performing date-based calculations, or 
 
 ## Release Notes
 
+> ### 1.5.3 (05-Jun-2026)
+> - Add a stand-alone `Get-PatchTuesday` gist to demonstrate the direct arithmetic implementation without requiring installation of the full module
+> - Include tests for the gist implementation
+
 > ### 1.5.2 (05-Jun-2026)
 > - Improve efficiency of core public date functions by replacing `Get-Date` month anchor creation with direct `[datetime]::new(...)` construction
 > - Simplify `Get-LastDayInMonth` to use `[datetime]::DaysInMonth(...)` for direct end-of-month calculation
