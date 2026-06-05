@@ -62,86 +62,31 @@ Install-Module -Name psDateFunctions
 
 ## Functions Included
 
-- Get-1stDayInMonth (Alias -> Get-FirstDayInMonth)
-- Get-1stWeekdayInMonth (Alias -> Get-FirstWeekdayInMonth)
-- Get-LastDayInMonth
-- Get-LastWeekdayInMonth
-- Get-NthDayOfWeekInMonth
-- Get-NthLastDayOfWeekInMonth
-- Get-NearestWeekday
-- Get-PatchTuesday
+Core functions:
+- `Get-1stDayInMonth` (Alias: `Get-FirstDayInMonth`)
+- `Get-1stWeekdayInMonth` (Alias: `Get-FirstWeekdayInMonth`)
+- `Get-LastDayInMonth`
+- `Get-LastWeekdayInMonth`
+- `Get-NthDayOfWeekInMonth`
+- `Get-NthLastDayOfWeekInMonth`
+- `Get-NearestWeekday`
+- `Get-PatchTuesday`
 
-- Get-1stSundayInMonth
-- Get-1stMondayInMonth
-- Get-1stTuesdayInMonth
-- Get-1stWednesdayInMonth
-- Get-1stThursdayInMonth
-- Get-1stFridayInMonth
-- Get-1stSaturdayInMonth
-- Get-2ndSundayInMonth
-- Get-2ndMondayInMonth
-- Get-2ndTuesdayInMonth
-- Get-2ndWednesdayInMonth
-- Get-2ndThursdayInMonth
-- Get-2ndFridayInMonth
-- Get-2ndSaturdayInMonth
-- Get-3rdSundayInMonth
-- Get-3rdMondayInMonth
-- Get-3rdTuesdayInMonth
-- Get-3rdWednesdayInMonth
-- Get-3rdThursdayInMonth
-- Get-3rdFridayInMonth
-- Get-3rdSaturdayInMonth
-- Get-4thSundayInMonth
-- Get-4thMondayInMonth
-- Get-4thTuesdayInMonth
-- Get-4thWednesdayInMonth
-- Get-4thThursdayInMonth
-- Get-4thFridayInMonth
-- Get-4thSaturdayInMonth
-- Get-5thSundayInMonth
-- Get-5thMondayInMonth
-- Get-5thTuesdayInMonth
-- Get-5thWednesdayInMonth
-- Get-5thThursdayInMonth
-- Get-5thFridayInMonth
-- Get-5thSaturdayInMonth
+Generated convenience functions:
+- `Get-{Nth}{Day}InMonth`
+- `Get-{Nth}Last{Day}InMonth`
+- `Get-Last{Day}InMonth`
 
-- Get-LastSundayInMonth
-- Get-LastMondayInMonth
-- Get-LastTuesdayInMonth
-- Get-LastWednesdayInMonth
-- Get-LastThursdayInMonth
-- Get-LastFridayInMonth
-- Get-LastSaturdayInMonth
-- Get-2ndLastSundayInMonth
-- Get-2ndLastMondayInMonth
-- Get-2ndLastTuesdayInMonth
-- Get-2ndLastWednesdayInMonth
-- Get-2ndLastThursdayInMonth
-- Get-2ndLastFridayInMonth
-- Get-2ndLastSaturdayInMonth
-- Get-3rdLastSundayInMonth
-- Get-3rdLastMondayInMonth
-- Get-3rdLastTuesdayInMonth
-- Get-3rdLastWednesdayInMonth
-- Get-3rdLastThursdayInMonth
-- Get-3rdLastFridayInMonth
-- Get-3rdLastSaturdayInMonth
-- Get-4thLastSundayInMonth
-- Get-4thLastMondayInMonth
-- Get-4thLastTuesdayInMonth
-- Get-4thLastWednesdayInMonth
-- Get-4thLastThursdayInMonth
-- Get-4thLastFridayInMonth
-- Get-4thLastSaturdayInMonth
-- Get-5thLastSundayInMonth
-- Get-5thLastMondayInMonth
-- Get-5thLastTuesdayInMonth
-- Get-5thLastWednesdayInMonth
-- Get-5thLastThursdayInMonth
-- Get-5thLastFridayInMonth
-- Get-5thLastSaturdayInMonth
+Where:
+- `{Nth}` = `1st`, `2nd`, `3rd`, `4th`, `5th`
+- `{Day}` = `Sunday`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`
+
+Examples:
+- `Get-1stSundayInMonth`
+- `Get-3rdFridayInMonth`
+- `Get-LastMondayInMonth`
+- `Get-2ndLastTuesdayInMonth`
+- `Get-5thSaturdayInMonth`
 
 
 ## Examples
@@ -154,10 +99,10 @@ Get-1stDayInMonth -Month 11 -Year 2024
 # Get the first Weekday of the month, you don't work on weekends, right?
 Get-1stDayInMonth -Month 11 -Year 2024 -Weekday
 
-# Get the first day of the month, but not weekend or Monday, because no one likes Mondays.
-Get-1stDayInMonth -Month 10 -Year 2024 -Exclude Saturday, Sunday, Monday
+# Get the last day of the month, but not the weekend or Monday, because no one likes Mondays.
+Get-LastDayInMonth -Month 10 -Year 2024 -Exclude Saturday, Sunday, Monday
 
-# Payday is the 15th… unless it’s a weekend. Then finance kindly moves it to Friday.
+# Payday is the 15th… unless it’s a weekend. Then payroll kindly moves it to Friday.
 Get-NearestWeekday -Day 15 -Month 6 -Year 2025 -Before
 
 # Find out when the next "Patch Tuesday" falls to avoid any IT calamities.
@@ -166,11 +111,20 @@ Get-PatchTuesday -Month 12 -Year 2025
 # Discover the 3rd Friday of the month for that long-overdue movie night.
 Get-3rdFridayInMonth -Month 10 -Year 2024
 
+# Get the last weekday of a month.
+Get-LastWeekdayInMonth -Month 8 -Year 2025
+
+# Use a custom workweek by excluding Friday, Saturday, and Sunday.
+Get-1stWeekdayInMonth -Month 6 -Year 2026 -ExcludeDays Friday, Saturday, Sunday
+
 # If you're really brave, you can find the 5th last Monday of April 2007 - I don't know why either.
 Get-5thLastMondayInMonth -Month 4 -Year 2007
 
 # Get the 1st Friday of every month next year. Because recurring drinks are important.
 1..12 | ForEach-Object { Get-1stFridayInMonth -Month $_ -Year 2026 }
+
+# Get Patch Tuesday for every month this year.
+1..12 | ForEach-Object { Get-PatchTuesday -Month $_ -Year 2026 }
 ```
 
 Whether you're managing event schedules, performing date-based calculations, or coordinating IT maintenance tasks, this module provides the essential tools to find relevant dates with ease and precision. Its intuitive design and comprehensive coverage of date-related queries make it an indispensable tool for PowerShell users seeking to streamline their date manipulation tasks.
@@ -181,6 +135,8 @@ Whether you're managing event schedules, performing date-based calculations, or 
 > ### 1.5.3 (05-Jun-2026)
 > - Add a stand-alone `Get-PatchTuesday` gist to demonstrate the direct arithmetic implementation without requiring installation of the full module
 > - Include tests for the gist implementation
+> - Update `README.md` to summarize the included function families instead of listing every generated function explicitly
+> - Expand `README.md` examples to better cover generic nth, nth-last, weekday-only, and Patch Tuesday scenarios
 
 > ### 1.5.2 (05-Jun-2026)
 > - Improve efficiency of core public date functions by replacing `Get-Date` month anchor creation with direct `[datetime]::new(...)` construction
