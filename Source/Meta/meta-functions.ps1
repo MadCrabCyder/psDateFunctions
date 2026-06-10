@@ -1,6 +1,38 @@
 # These functions are used to generate the wrapper functions
 # but are not included in the actual module
 
+$script:WrapperFunctionTemplatePath = Join-Path $PSScriptRoot 'Templates\WrapperFunction.ps1.tpl'
+$script:WrapperFunctionTemplate = $null
+$script:WrapperTargets = @('Get-NthDayOfWeekInMonth', 'Get-NthLastDayOfWeekInMonth')
+$script:Days = [System.DayOfWeek].GetEnumNames()
+$script:SupportedOrdinals = 1..5
+
+function Get-WrapperFunctionTemplate {
+    if (-not $script:WrapperFunctionTemplate) {
+        if (-not (Test-Path -Path $script:WrapperFunctionTemplatePath -PathType Leaf)) {
+            throw "Wrapper function template not found: $script:WrapperFunctionTemplatePath"
+        }
+
+        $script:WrapperFunctionTemplate = Get-Content -Path $script:WrapperFunctionTemplatePath -Raw
+    }
+
+    return $script:WrapperFunctionTemplate
+}
+
+function Expand-Template {
+    param (
+        [string]$Template,
+        [hashtable]$Values
+    )
+
+    $content = $Template
+    foreach ($key in $Values.Keys) {
+        $content = $content.Replace("{{${key}}}", [string]$Values[$key])
+    }
+
+    return $content.TrimEnd([char[]]"`r`n")
+}
+
 function Get-OrdinalNumber {
     param (
         [int]$Num
@@ -55,9 +87,7 @@ function Get-WrapperFunctionDetails {
 
     $functionName = "Get-$($description -replace '\s','' )InMonth"
 
-    $alias = "" # if ($N -eq 2 -and $Day -eq "Tuesday" -and -not $last) { "Get-PatchTuesday" } else { "" }
-
-    return @{ FunctionName = $functionName; Description = $description; Alias = $alias }
+    return @{ FunctionName = $functionName; Description = $description }
 }
 
 function Get-WrapperFunctionContent {
@@ -68,59 +98,15 @@ function Get-WrapperFunctionContent {
         [int]$N
 
     )
-    # $alias = if ($week -eq 2 -and $day -eq "Tuesday") { "Get-PatchTuesday" } else { "" }
-    # $last = ($WrappedFunction -match 'Last') ? "Last " : ""
-    # $NthOrd = ($last -and $NthOrd -eq '1st') ? "" : "$NthOrd"
+    $template = Get-WrapperFunctionTemplate
 
-    # $description = Get-WrapperFunctionDescription -WrappedFunction $wrappedFunction -Day $day -NthOrd $NthOrd
-    # # write-host "$($functionName) - $($wrappedFunction)"
-
-
-    return @"
-<#
-.SYNOPSIS
-Calculates the date of the $($FunctionDetails.Description) of a specified month and year.
-
-.DESCRIPTION
-The $($FunctionDetails.functionName) function calculates the date of the $($FunctionDetails.Description) in the specified month and year. It simplifies the process of identifying the date for scheduling events or meetings that recur on the $($FunctionDetails.Description) of a month.
-
-.PARAMETER Month
-The numeric value representing the month. This parameter is mandatory and must be an integer between 1 (January) and 12 (December).
-
-.PARAMETER Year
-The numeric value representing the year. This parameter is mandatory and must be a integer between 1 and 9999.
-
-.EXAMPLE
-$($FunctionDetails.functionName) -Month 9 -Year 2024
-
-This command returns the date of the $($FunctionDetails.Description) of September 2024.
-
-.EXAMPLE
-`$day = $($FunctionDetails.functionName) -Month 12 -Year 2023
-Write-Output "The $($FunctionDetails.Description) of December 2023 is on: `$day"
-
-Calculates the $($FunctionDetails.Description) of December 2023, assigns it to the variable `$day, and prints it.
-
-.INPUTS
-None. You cannot pipe input to $($FunctionDetails.functionName).
-
-.OUTPUTS
-System.DateTime
-This function returns a System.DateTime object representing the $($FunctionDetails.Description) of the given month and year.
-
-.NOTES
-This function is a wrapper around $wrappedFunction, specifically configured to find the $($FunctionDetails.Description) of the month. Ensure the 'Month' and 'Year' parameters are within their valid ranges to avoid exceptions.
-
-#>
-function $($FunctionDetails.functionName) {
-    [OutputType([System.DateTime])]
-    param (
-        [Parameter(Mandatory)][int]`$Month,
-        [Parameter(Mandatory)][int]`$Year
-    )
-    $wrappedFunction -Year `$Year -Month `$Month -DayOfWeek $Day -Nth $N
-}
-"@
+    return Expand-Template -Template $template -Values @{
+        Description = $FunctionDetails.Description
+        FunctionName = $FunctionDetails.FunctionName
+        WrappedFunction = $wrappedFunction
+        Day = $Day
+        Nth = $N
+    }
 }
 
 # function Get-WrapperFunctionTestContent {

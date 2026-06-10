@@ -132,6 +132,12 @@ Whether you're managing event schedules, performing date-based calculations, or 
 
 ## Release Notes
 
+> ### 1.5.4 (10-Jun-2026)
+> - Refactor wrapper generation to use an external template file for generated function help and body content
+> - Add clearer template loading and validation in `meta-functions.ps1`
+> - Centralize wrapper generation constants for supported wrapper targets, days, and ordinals
+> - Update wrapper generation to only rewrite files when content has actually changed
+
 > ### 1.5.3 (05-Jun-2026)
 > - Add a stand-alone `Get-PatchTuesday` gist to demonstrate the direct arithmetic implementation without requiring installation of the full module
 > - Include tests for the gist implementation
