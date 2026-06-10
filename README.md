@@ -132,6 +132,12 @@ Whether you're managing event schedules, performing date-based calculations, or 
 
 ## Release Notes
 
+> ### 1.5.5 (10-Jun-2026)
+> - Improve the stand-alone `Get-PatchTuesday` gist with parameter validation attributes and interactive help messages
+> - Add a `Date` parameter set that defaults to the current month and supports pipeline input
+> - Expand gist help examples for direct date input, no-parameter usage, and pipeline usage
+> - Refine gist arithmetic comments and calculate the second Tuesday using direct day-of-month construction
+
 > ### 1.5.4 (10-Jun-2026)
 > - Refactor wrapper generation to use an external template file for generated function help and body content
 > - Add clearer template loading and validation in `meta-functions.ps1`

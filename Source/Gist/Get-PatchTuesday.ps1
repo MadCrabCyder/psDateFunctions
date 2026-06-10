@@ -15,6 +15,9 @@ The numeric value representing the month. This parameter is mandatory and must b
 .PARAMETER Year
 The numeric value representing the year. This parameter is mandatory and must be an integer between 1 and 9999.
 
+.PARAMETER Date
+An optional date used to determine the target month and year. Defaults to today's date when no parameters are supplied.
+
 .EXAMPLE
 Get-PatchTuesday -Month 9 -Year 2024
 
@@ -25,6 +28,21 @@ $patchDay = Get-PatchTuesday -Month 3 -Year 2025
 Write-Output "Patch Tuesday in March 2025 falls on: $patchDay"
 
 Calculates the Patch Tuesday date for March 2025 and outputs it.
+
+.EXAMPLE
+Get-PatchTuesday -Date (Get-Date '2025-03-15')
+
+Returns the Patch Tuesday date for the month and year of the supplied date.
+
+.EXAMPLE
+Get-PatchTuesday
+
+Returns the Patch Tuesday date for the current month.
+
+.EXAMPLE
+Get-Date '2025-03-15' | Get-PatchTuesday
+
+Returns the Patch Tuesday date for the month and year of the piped input date.
 
 .INPUTS
 None. You cannot pipe input to Get-PatchTuesday.
@@ -39,23 +57,38 @@ https://github.com/MadCrabCyder/psDateFunctions
 
 #>
 function Get-PatchTuesday {
+    [CmdletBinding(DefaultParameterSetName='Date')]
     [OutputType([datetime])]
     param (
-        [Parameter(Mandatory)][int]$Month,
-        [Parameter(Mandatory)][int]$Year
+        [Parameter(Mandatory, ParameterSetName='MonthYear', HelpMessage='Enter the month number, from 1 to 12.')]
+        [ValidateRange(1,12)]
+        [int]$Month,
+
+        [Parameter(Mandatory, ParameterSetName='MonthYear', HelpMessage='Enter the year, from 1 to 9999.')]
+        [ValidateRange(1,9999)]
+        [int]$Year,
+
+        [Parameter(ParameterSetName='Date', ValueFromPipeline, HelpMessage='Enter any date in the target month, or omit it to use today.')]
+        [datetime]$Date = [datetime]::Today
     )
 
-    if ($Month -lt 1 -or $Month -gt 12) { throw 'Invalid Month'}
-    if ($Year -lt 1 -or $Year -gt 9999) { throw 'Invalid Year'}
+    process {
+        if ($PSCmdlet.ParameterSetName -eq 'Date') {
+            $Month = $Date.Month
+            $Year = $Date.Year
+        }
 
+        $firstDayInMonth = [datetime]::new($Year, $Month, 1)
 
-    $firstDayInMonth = [datetime]::new($Year, $Month, 1)
+        # Patch Tuesday is always the second Tuesday of the month, so it must fall
+        # between the 8th and the 14th.
 
-    # First, calculate how many days from the 1st of the month to the first Tuesday.
-    # The modulo keeps the result in the range 0..6 even when the month starts after Tuesday.
-    # Then add 7 more days to move from the first Tuesday to the second Tuesday.
-    $offset = ((7 + [int][System.DayOfWeek]::Tuesday - [int]$firstDayInMonth.DayOfWeek) % 7) + 7
+        # First calculate the offset from the 1st of the month to the first Tuesday.
+        # The modulo keeps the result in the range 0..6 even when the month starts after Tuesday.
+        # Then add 8 to move to the day-of-month for the second Tuesday.
 
-    return $firstDayInMonth.AddDays($offset)
+        $day = 8 + ((7 + [int][System.DayOfWeek]::Tuesday - [int]$firstDayInMonth.DayOfWeek) % 7)
 
+        return [datetime]::new($Year, $Month, $day)
+    }
 }
