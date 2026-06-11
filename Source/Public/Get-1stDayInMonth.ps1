@@ -50,7 +50,7 @@ The function checks if the provided month is within the valid range (1-12). An e
 
 #>
 function Get-1stDayInMonth {
-    [Alias('Get-FirstDayInMonth')]
+    [Alias('Get-FirstDayInMonth','Get-StartOfMonth')]
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,

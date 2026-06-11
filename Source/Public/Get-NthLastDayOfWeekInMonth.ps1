@@ -54,15 +54,17 @@ function Get-NthLastDayOfWeekInMonth {
     if ($Year -lt 1 -or $Year -gt 9999) { throw 'Invalid Year'}
     if ($Nth -lt 1 -or $Nth -gt 5) { throw 'Invalid Nth, must be between 1 and 5' }
 
-    $lastDayInMonth = [datetime]::new($Year, $Month, [datetime]::DaysInMonth($Year, $Month))
+    $daysInMonth = [datetime]::DaysInMonth($Year, $Month)
+    $lastDayInMonth = [datetime]::new($Year, $Month, $daysInMonth)
 
-    $result = $lastDayInMonth.AddDays(
-        (
-            ([int]$DayOfWeek - [int]$lastDayInMonth.DayOfWeek - 7) % -7
-        ) - 7 * ($Nth -1)
-    )
+    # First, calculate how many days back from the last day of the month to the
+    # last matching DayOfWeek. The modulo keeps the result in the range 0..-6.
+    # Then subtract 7 days for each additional instance until the requested
+    # Nth-last one.
 
-    if ($result.Month -ne $Month) { throw 'That day does not exist'}
+    $day = $daysInMonth + (([int]$DayOfWeek - [int]$lastDayInMonth.DayOfWeek - 7) % -7) - (7 * ($Nth - 1))
 
-    return $result
+    if ($day -lt 1) { throw 'That day does not exist'}
+
+    return [datetime]::new($Year, $Month, $day)
 }

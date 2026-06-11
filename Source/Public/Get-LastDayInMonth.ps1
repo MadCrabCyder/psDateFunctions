@@ -40,6 +40,7 @@ The function checks if the provided month is within the valid range (1-12). An e
 
 #>
 function Get-LastDayInMonth {
+    [Alias('Get-EndOfMonth')]
     [OutputType([System.DateTime])]
     param (
         [Parameter(Mandatory)][int]$Month,

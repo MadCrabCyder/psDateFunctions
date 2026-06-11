@@ -55,14 +55,16 @@ function Get-NthDayOfWeekInMonth {
     if ($Nth -lt 1 -or $Nth -gt 5) { throw 'Invalid Nth, must be between 1 and 5' }
 
     $firstDayInMonth = [datetime]::new($Year, $Month, 1)
+    $daysInMonth = [datetime]::DaysInMonth($Year, $Month)
 
-    $result = $firstDayInMonth.AddDays(
-        (
-            (7 + [int]$DayOfWeek - [int]$firstDayInMonth.DayOfWeek) % 7
-        ) + 7 * ($Nth -1)
-    )
+    # First, calculate how many days from the 1st of the month to the first
+    # matching DayOfWeek. The modulo keeps the result in the range 0..6 even
+    # when the month starts after the requested DayOfWeek.
+    # Then add 7 days for each additional instance until the requested Nth one.
 
-    if ($result.Month -ne $Month) { throw 'That day does not exist'}
+    $day = 1 + ((7 + [int]$DayOfWeek - [int]$firstDayInMonth.DayOfWeek) % 7) + (7 * ($Nth - 1))
 
-    return $result
+    if ($day -gt $daysInMonth) { throw 'That day does not exist'}
+
+    return [datetime]::new($Year, $Month, $day)
 }
