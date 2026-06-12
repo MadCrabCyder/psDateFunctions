@@ -18,10 +18,12 @@ jobs:
       - name: Install Pester
         shell: pwsh
         run: |
+          Install-Module InvokeBuild -Force -SkipPublisherCheck -Scope CurrentUser
           Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+          Import-Module InvokeBuild
           Import-Module Pester
 
-      - name: Run Pester Tests
+      - name: Run Invoke-Build Test
         shell: pwsh
         run: |
-          Invoke-Pester -Path ./Source/Tests -Output Detailed
+          Invoke-Build Test
