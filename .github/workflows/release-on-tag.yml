@@ -1,0 +1,139 @@
+name: Release On Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+      - '*.*.*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Version tag to validate against, for example 1.5.7 or v1.5.7'
+        required: true
+        type: string
+      publish:
+        description: 'Publish to PowerShell Gallery and create or update the GitHub release'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Test, Publish, and Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve release mode
+        id: release
+        shell: pwsh
+        run: |
+          $eventName = '${{ github.event_name }}'
+
+          if ($eventName -eq 'push') {
+              $tag = '${{ github.ref_name }}'
+              $shouldPublish = $true
+          }
+          else {
+              $tag = '${{ inputs.release_tag }}'
+              $shouldPublish = '${{ inputs.publish }}' -eq 'true'
+          }
+
+          if ($tag -notmatch '^(v)?\d+\.\d+\.\d+$') {
+              throw "Release tag '$tag' is invalid. Expected format: <major>.<minor>.<patch> or v<major>.<minor>.<patch>."
+          }
+
+          $version = $tag -replace '^v', ''
+
+          "release_tag=$tag" | Add-Content $env:GITHUB_OUTPUT
+          "release_version=$version" | Add-Content $env:GITHUB_OUTPUT
+          "should_publish=$($shouldPublish.ToString().ToLowerInvariant())" | Add-Content $env:GITHUB_OUTPUT
+
+      - name: Show PowerShell version
+        shell: pwsh
+        run: $PSVersionTable
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          Install-Module InvokeBuild -Force -SkipPublisherCheck -Scope CurrentUser
+          Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+          Install-Module Configuration -Force -SkipPublisherCheck -Scope CurrentUser
+          Install-Module ModuleBuilder -Force -SkipPublisherCheck -Scope CurrentUser
+          Import-Module InvokeBuild
+          Import-Module Pester
+          Import-Module Configuration
+          Import-Module ModuleBuilder
+
+      - name: Run Invoke-Build Test
+        shell: pwsh
+        run: Invoke-Build Test
+
+      - name: Validate module version matches tag
+        shell: pwsh
+        run: |
+          $tag = '${{ steps.release.outputs.release_tag }}'
+          $tagVersion = '${{ steps.release.outputs.release_version }}'
+          $manifest = Import-PowerShellDataFile ./Source/psDateFunctions.psd1
+
+          if ($manifest.ModuleVersion -ne $tagVersion) {
+              throw "ModuleVersion '$($manifest.ModuleVersion)' does not match tag '$tag'."
+          }
+
+      - name: Build module
+        shell: pwsh
+        run: Invoke-Build Build
+
+      - name: Publish to PowerShell Gallery
+        if: steps.release.outputs.should_publish == 'true'
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: Invoke-Build PublishBuilt
+
+      - name: Dry-run publish script
+        if: steps.release.outputs.should_publish != 'true'
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: dry-run
+        run: Invoke-Build PublishBuiltWhatIf
+
+      - name: Extract release notes from changelog
+        shell: pwsh
+        run: |
+          $version = '${{ steps.release.outputs.release_version }}'
+          $content = Get-Content ./CHANGELOG.md -Raw
+          $pattern = "(?ms)^## $([regex]::Escape($version)) \([^)]+\)\s*(?<body>.*?)(?=^## |\z)"
+          $match = [regex]::Match($content, $pattern)
+
+          if (-not $match.Success) {
+              throw "Could not find CHANGELOG.md entry for version $version."
+          }
+
+          $body = $match.Groups['body'].Value.Trim()
+          Set-Content -Path ./release-notes.md -Value $body
+
+      - name: Create or update GitHub release
+        if: steps.release.outputs.should_publish == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = '${{ steps.release.outputs.release_tag }}'
+          $repo = '${{ github.repository }}'
+          $notesFile = Join-Path $PWD 'release-notes.md'
+
+          gh release view $tag --repo $repo *> $null
+          if ($LASTEXITCODE -eq 0) {
+              gh release edit $tag --repo $repo --title $tag --notes-file $notesFile --latest
+          }
+          else {
+              gh release create $tag --repo $repo --verify-tag --title $tag --notes-file $notesFile --latest
+          }

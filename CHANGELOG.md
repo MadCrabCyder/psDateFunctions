@@ -2,6 +2,14 @@
 
 All notable changes to `psDateFunctions` are documented in this file.
 
+## 1.5.7 (12-Jun-2026)
+
+- Consolidate validation, syntax analysis, testing, cleaning, building, and publishing behind `Invoke-Build` tasks in `.build.ps1`
+- Remove legacy wrapper scripts in favor of direct `Invoke-Build` entrypoints for local automation
+- Add publish tasks for full local release flow, built-output publish, and dry-run publish scenarios
+- Add a GitHub Actions `Release On Tag` workflow that reruns tests, validates the tag version, publishes to PowerShell Gallery, and creates or updates the GitHub release
+- Update build and release documentation to reflect the new `Invoke-Build`-based automation flow
+
 ## 1.5.6 (11-Jun-2026)
 
 - Clean up `README.md` structure and move release history into `CHANGELOG.md`

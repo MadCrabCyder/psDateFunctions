@@ -19,6 +19,7 @@ The primary local commands are:
 ```powershell
 Invoke-Build Test
 Invoke-Build Build
+Invoke-Build Publish
 ```
 
 ## Available Tasks
@@ -96,6 +97,49 @@ Run it with:
 Invoke-Build Build
 ```
 
+### `PublishBuilt`
+
+Publishes the already-built module from `Output\psDateFunctions`.
+
+Use this when tests and build have already run and you only want the publish step.
+
+Prerequisite:
+
+- `PSGALLERY_API_KEY` must be set
+
+Run it with:
+
+```powershell
+$env:PSGALLERY_API_KEY = 'your-key'
+Invoke-Build PublishBuilt
+```
+
+For a dry-run:
+
+```powershell
+$env:PSGALLERY_API_KEY = 'dry-run'
+Invoke-Build PublishBuiltWhatIf
+```
+
+### `Publish`
+
+Runs the full local release path:
+
+- `Test`
+- `Build`
+- `PublishBuilt`
+
+Prerequisite:
+
+- `PSGALLERY_API_KEY` must be set
+
+Run it with:
+
+```powershell
+$env:PSGALLERY_API_KEY = 'your-key'
+Invoke-Build Publish
+```
+
 ## Typical Local Workflow
 
 For day-to-day development:
@@ -110,7 +154,8 @@ For release prep:
 ```powershell
 Invoke-Build Test
 Invoke-Build Build
-./publish.ps1 -WhatIf
+$env:PSGALLERY_API_KEY = 'dry-run'
+Invoke-Build PublishBuiltWhatIf
 ```
 
 ## CI Usage
